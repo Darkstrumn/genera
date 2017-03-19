@@ -1,0 +1,16 @@
+[
+{
+  "modid": "genera",
+  "name": "Genera",
+  "description": "Genera: generic magic at its best!",
+  "version": "",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["beams"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
