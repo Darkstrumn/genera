@@ -23,7 +23,7 @@ public class BlockEventHandler {
                     event.getPos().getY(),
                     event.getPos().getZ(),
                     new ItemStack(GeneraItems.ItemSeedNightshade,
-                            MathHelper.getInt(event.getWorld().rand, 0, 2))));
+                            MathHelper.getInt(event.getWorld().rand, 0, 1))));
         }
     }
 

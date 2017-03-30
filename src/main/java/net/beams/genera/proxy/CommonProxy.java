@@ -2,6 +2,7 @@ package net.beams.genera.proxy;
 
 import net.beams.genera.init.GeneraBlocks;
 import net.beams.genera.init.GeneraCrafting;
+import net.beams.genera.init.GeneraEntities;
 import net.beams.genera.init.GeneraItems;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -12,6 +13,7 @@ public class CommonProxy {
         GeneraBlocks.init();
         GeneraItems.init();
         GeneraCrafting.init();
+        GeneraEntities.init();
     }
 
     public void init(FMLInitializationEvent e) {

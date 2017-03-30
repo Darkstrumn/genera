@@ -1,9 +1,17 @@
 package net.beams.genera.blocks;
 
+import net.beams.genera.entities.passive.EntityFaerie;
 import net.beams.genera.init.GeneraItems;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,9 +26,23 @@ public class BlockNightshadeCrop extends BlockGeneraCrop {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-
         if (state.getValue(AGE).intValue() == 2)
             return GeneraItems.ItemSeedNightshade;
         return null;
+    }
+
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        super.updateTick(worldIn, pos, state, rand);
+        if (state.getValue(AGE).intValue() == 2) {
+            EntityFaerie faerie = new EntityFaerie(worldIn);
+            faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
+            worldIn.spawnEntity(faerie);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
+    {
+        tooltip.add("Steffan");
     }
 }

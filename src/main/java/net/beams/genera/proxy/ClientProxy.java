@@ -1,5 +1,6 @@
 package net.beams.genera.proxy;
 
+import net.beams.genera.init.GeneraEntities;
 import net.beams.genera.init.GeneraRenderers;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -11,5 +12,6 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent e) {
         super.init(e);
         GeneraRenderers.init();
+        GeneraEntities.initModels();
     }
 }

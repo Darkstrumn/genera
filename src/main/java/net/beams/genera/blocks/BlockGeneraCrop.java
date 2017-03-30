@@ -3,7 +3,6 @@ package net.beams.genera.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -31,7 +30,6 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
         setTickRandomly(true);
         setCreativeTab(null);
         setHardness(0.0F);
-        setSoundType(SoundType.GROUND);
         disableStats();
         setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
     }
@@ -72,7 +70,6 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
         grow(state, worldIn, pos);
     }
 
-    @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         super.updateTick(worldIn, pos, state, rand);
@@ -81,7 +78,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
         {
             int i = state.getValue(AGE).intValue();
 
-            if (i < 5)
+            if (i < 2)
             {
                 float f = getGrowthChance(this, worldIn, pos);
 
@@ -154,4 +151,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
     {
         return state.getValue(AGE).intValue();
     }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) { return this.getDefaultState().withProperty(AGE, meta); }
 }
