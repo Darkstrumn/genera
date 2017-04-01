@@ -1,3 +1,5 @@
 tile.nightshade.name=Nightshade
 item.nightshade_seed.name=Nightshade Seeds
 entity.faerie.name=Faerie
+item.glass_jar_empty.name=Empty Glass Jar
+item.glass_jar_full.name=Full Glass Jar
