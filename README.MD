@@ -4,7 +4,7 @@ Current Features:
 
 Summon faerie from the otherworld using flowers
 
-Catch these faerie in glass jar
+Catch these faerie in glass jars
 
 
 
