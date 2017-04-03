@@ -21,6 +21,7 @@ public class GeneraRenderers {
         register(Item.getItemFromBlock(GeneraBlocks.BlockNightshadeCrop), 0, "nightshade");
         register(GeneraItems.ItemGlassJar, 0, "glass_jar_empty");
         register(GeneraItems.ItemGlassJar, 1, "glass_jar_full");
+        register(Item.getItemFromBlock(GeneraBlocks.BlockFaerieHome), 0, "faerie_home");
     }
 
     public static void register(Item item, int meta, String name) {
