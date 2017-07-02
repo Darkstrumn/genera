@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "Genera",
+  "pattern": [
+  "   ",
+  " C ",
+  " G "
+],
+  "key": {
+    "G": {
+      "item": "minecraft:glass",
+      "data": 0,
+      "count": 1
+    },
+    "C": {
+      "item": "minecraft:clay_ball",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:glass",
+      "data": 0,
+      "count": 1
+    },
+    {
+      "item": "minecraft:clay_ball",
+      "data": 0,
+      "count": 1
+    }
+  ],
+  "result": {
+    "item": "genera:glass_jar",
+    "data": 0,
+    "count": 1
+  }
+}
