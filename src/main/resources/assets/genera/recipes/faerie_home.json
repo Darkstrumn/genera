@@ -2,24 +2,29 @@
   "type": "minecraft:crafting_shaped",
   "group": "Genera",
   "pattern": [
-  "   ",
-  " C ",
-  " G "
-],
+    "GGG",
+    "JJJ",
+    "PPP"
+  ],
   "key": {
     "G": {
       "item": "minecraft:glass",
       "data": 0,
       "count": 1
     },
-    "C": {
-      "item": "minecraft:clay_ball",
+    "P": {
+      "item": "minecraft:planks",
+      "data": 32767,
+      "count": 1
+    },
+    "J": {
+      "item": "genera:glass_jar",
       "data": 0,
       "count": 1
     }
   },
   "result": {
-    "item": "genera:glass_jar",
+    "item": "genera:faerie_home",
     "data": 0,
     "count": 1
   }
