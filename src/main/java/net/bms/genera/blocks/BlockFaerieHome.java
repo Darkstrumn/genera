@@ -1,5 +1,6 @@
 package net.bms.genera.blocks;
 
+import net.bms.genera.init.GeneraItems;
 import net.bms.genera.te.TileFaerieHome;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -15,7 +16,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -67,7 +72,45 @@ public class BlockFaerieHome extends Block implements ITileEntityProvider{
         if (!(te instanceof TileFaerieHome)) {
             return false;
         }
-        //player.openGui(Genera.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+
+        if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            if (((TileFaerieHome) te).canInteractWith(player)) {
+                IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (player.getHeldItem(hand).getItem() == new ItemStack(GeneraItems.ItemGlassJar, 1, 1).getItem()) {
+                    if (itemHandler.getStackInSlot(1) != ItemStack.EMPTY) {
+                        TextComponentTranslation comp = new TextComponentTranslation("string.faerie_home.slot_taken");
+                        comp.getStyle().setColor(TextFormatting.RED);
+
+                        player.sendMessage(comp);
+                    }
+                    else if (itemHandler.getStackInSlot(1) == ItemStack.EMPTY) {
+                        itemHandler.insertItem(1, player.getHeldItem(hand), false);
+                        player.setHeldItem(hand, ItemStack.EMPTY);
+                    }
+                }
+                else {
+                    if (player.isSneaking()) {
+                        if (player.getHeldItem(hand) == ItemStack.EMPTY) {
+                            ItemStack stack = itemHandler.extractItem(1, 1, false);
+                            if (stack != null) {
+                                player.setHeldItem(hand, stack);
+                            }
+                        } else {
+                            TextComponentTranslation comp = new TextComponentTranslation("string.player.inventory_full");
+                            comp.getStyle().setColor(TextFormatting.RED);
+
+                            player.sendMessage(comp);
+                        }
+                    } else if (!player.isSneaking()) {
+                        TextComponentTranslation comp = new TextComponentTranslation("string.player.not_sneaking");
+                        comp.getStyle().setColor(TextFormatting.RED);
+
+                        player.sendMessage(comp);
+                    }
+                }
+            }
+        }
+
         return true;
     }
 

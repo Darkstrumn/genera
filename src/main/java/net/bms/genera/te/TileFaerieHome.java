@@ -13,7 +13,7 @@ import net.minecraftforge.items.ItemStackHandler;
  * Created by ben on 4/2/17.
  */
 public class TileFaerieHome extends TileEntity implements ITickable {
-    public static final int SIZE = 9;
+    public static final int SIZE = 6;
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
         protected void onContentsChanged(int slot) {

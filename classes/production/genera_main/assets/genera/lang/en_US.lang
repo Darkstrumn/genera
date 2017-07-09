@@ -4,3 +4,6 @@ entity.faerie.name=Faerie
 item.glass_jar_empty.name=Empty Glass Jar
 item.glass_jar_full.name=Full Glass Jar
 tile.faerie_home.name=Faerie Home
+string.player.not_sneaking=You must be sneaking to extract items!
+string.player.inventory_full=You must use an empty hand!
+string.faerie_home.slot_taken=This Faerie home is full! Either take its occupants out or craft a new one.
