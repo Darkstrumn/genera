@@ -1,17 +1,20 @@
 package net.bms.genera.items;
 
 import net.bms.genera.capability.FaerieInformationProvider;
+import net.bms.genera.entities.passive.EntityFaerie;
 import net.bms.genera.init.GeneraItems;
 import net.bms.genera.lib.Constants;
+import net.bms.genera.te.TileFaerieHome;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,19 +48,15 @@ public class ItemGlassJar extends Item {
     {
         if (stack.getMetadata() == 1) {
             NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt == null) {
-                System.out.println("ItemGlassJar's tag compound is null. Tell Ben to fix this!");
+            if (nbt == null) return;
+            int type = nbt.getInteger("type");
+            String typeName = "Woodland";
+            if (type == 0) {
+                typeName = "Woodland";
             }
-            else {
-                int type = nbt.getInteger("type");
-                String typeName = "Woodland";
-                if (type == 0) {
-                    typeName = "Woodland";
-                }
-                tooltip.add(String.format("Type: %s", typeName));
-                tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
-                tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
-            }
+            tooltip.add(String.format("Type: %s", typeName));
+            tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
+            tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
         }
     }
 
@@ -85,5 +84,20 @@ public class ItemGlassJar extends Item {
     {
         items.add(new ItemStack(this, 1, 0));
         items.add(new ItemStack(this, 1, 1));
+    }
+
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        if (stack.getMetadata() == 1 && !(worldIn.getTileEntity(pos) instanceof TileFaerieHome)) {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt == null) return EnumActionResult.FAIL;
+            EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"));
+            faerie.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+            worldIn.spawnEntity(faerie);
+            stack.setItemDamage(0);
+            player.setHeldItem(hand, stack);
+        }
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 }

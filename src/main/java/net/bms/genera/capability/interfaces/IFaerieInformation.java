@@ -13,7 +13,7 @@ public interface IFaerieInformation {
     Float getSize();
 
     void setMaxHealth(Double maxHealth);
-    Double getMaxHealth();
+    Double getMaxHealth();;
 
     void deserializeNBT(NBTTagCompound nbt);
     NBTTagCompound serializeNBT();

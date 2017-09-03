@@ -62,15 +62,11 @@ public class EntityFaerie extends EntityFlying {
             onKillCommand();
             stack.setItemDamage(1);
             NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt == null) {
-                System.out.println("ItemGlassJar's tag compound is null. Tell Ben to fix this!");
-            }
-            else {
-                nbt.setFloat("size", faerieInformation.getSize());
-                nbt.setInteger("type", faerieInformation.getType());
-                nbt.setDouble("max_health", faerieInformation.getMaxHealth());
-                player.setHeldItem(hand, stack);
-            }
+            if (nbt == null) return false;
+            nbt.setFloat("size", faerieInformation.getSize());
+            nbt.setInteger("type", faerieInformation.getType());
+            nbt.setDouble("max_health", faerieInformation.getMaxHealth());
+            player.setHeldItem(hand, stack);
         }
         return super.processInteract(player, hand);
     }
