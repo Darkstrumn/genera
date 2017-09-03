@@ -1,7 +1,7 @@
 package net.bms.genera.capability;
 
 import net.bms.genera.capability.interfaces.IFaerieInformation;
-import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -13,11 +13,11 @@ import javax.annotation.Nullable;
 /**
  * Created by benjaminsutter on 7/3/17.
  */
-public class FaerieInformationProvider implements ICapabilitySerializable<NBTBase> {
+public class FaerieInformationProvider implements ICapabilitySerializable<NBTTagCompound> {
 
     @CapabilityInject(IFaerieInformation.class)
-    public static final Capability<FaerieInformation> FAERIE_INFORMATION_CAPABILITY = null;
-    private FaerieInformation instance = FAERIE_INFORMATION_CAPABILITY.getDefaultInstance();
+    public static Capability<IFaerieInformation> FAERIE_INFORMATION_CAPABILITY = null;
+    private final IFaerieInformation cap = FAERIE_INFORMATION_CAPABILITY.getDefaultInstance();
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
@@ -27,16 +27,16 @@ public class FaerieInformationProvider implements ICapabilitySerializable<NBTBas
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == FAERIE_INFORMATION_CAPABILITY ? FAERIE_INFORMATION_CAPABILITY.<T> cast(this.instance) : null;
+        return capability == FAERIE_INFORMATION_CAPABILITY ? FAERIE_INFORMATION_CAPABILITY.cast(cap) : null;
     }
 
     @Override
-    public NBTBase serializeNBT() {
-        return FAERIE_INFORMATION_CAPABILITY.getStorage().writeNBT(FAERIE_INFORMATION_CAPABILITY, instance, null);
+    public NBTTagCompound serializeNBT() {
+        return cap.serializeNBT();
     }
 
     @Override
-    public void deserializeNBT(NBTBase nbt) {
-        FAERIE_INFORMATION_CAPABILITY.getStorage().readNBT(FAERIE_INFORMATION_CAPABILITY, instance, null, nbt);
+    public void deserializeNBT(NBTTagCompound nbt) {
+        cap.deserializeNBT(nbt);
     }
 }

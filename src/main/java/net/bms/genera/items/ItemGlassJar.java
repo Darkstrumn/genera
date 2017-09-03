@@ -6,8 +6,10 @@ import net.bms.genera.lib.Constants;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -23,7 +25,7 @@ import java.util.List;
 public class ItemGlassJar extends Item {
 
     public ItemGlassJar() {
-        setCreativeTab(CreativeTabs.TOOLS);
+        setCreativeTab(CreativeTabs.MISC);
         setUnlocalizedName("glass_jar");
         setRegistryName("glass_jar");
         setMaxStackSize(1);
@@ -31,14 +33,25 @@ public class ItemGlassJar extends Item {
         setMaxDamage(0);
     }
 
+    @Override
+    @Nullable
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new FaerieInformationProvider();
+    }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (stack.getMetadata() == 1) {
-            if (stack.getCapability(FaerieInformationProvider.FAERIE_INFORMATION_CAPABILITY, null) != null) {
-                tooltip.add(String.format("Type: %d", stack.getCapability(FaerieInformationProvider.FAERIE_INFORMATION_CAPABILITY, null).getType()));
-                tooltip.add(String.format("Size: %f", stack.getCapability(FaerieInformationProvider.FAERIE_INFORMATION_CAPABILITY, null).getSize()));
-                tooltip.add(String.format("Maximum Health: %s", stack.getCapability(FaerieInformationProvider.FAERIE_INFORMATION_CAPABILITY, null).getMaxHealth().toString()));
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt == null) {
+                System.out.println("ItemGlassJar's tag compound is null. Tell Ben to fix this!");
+            }
+            else {
+                tooltip.add(String.format("Type: %d", nbt.getInteger("type")));
+                tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
+                tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
             }
         }
     }
@@ -46,6 +59,13 @@ public class ItemGlassJar extends Item {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return super.getUnlocalizedName() + "_" + (stack.getItemDamage() == 0 ? "empty" : "full");
+    }
+
+    @Override
+    public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool) {
+        if (itemstack.getTagCompound() == null) {
+            itemstack.setTagCompound(new NBTTagCompound());
+        }
     }
 
     @SideOnly(Side.CLIENT)

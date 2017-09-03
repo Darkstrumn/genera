@@ -28,7 +28,7 @@ public class ItemSeedNightshade extends Item implements IPlantable {
     public ItemSeedNightshade() {
         setRegistryName("nightshade_seed");
         setUnlocalizedName("nightshade_seed");
-        setCreativeTab(CreativeTabs.MATERIALS);
+        setCreativeTab(CreativeTabs.MISC);
     }
 
     @Override
