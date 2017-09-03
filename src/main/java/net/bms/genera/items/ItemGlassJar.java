@@ -49,7 +49,12 @@ public class ItemGlassJar extends Item {
                 System.out.println("ItemGlassJar's tag compound is null. Tell Ben to fix this!");
             }
             else {
-                tooltip.add(String.format("Type: %d", nbt.getInteger("type")));
+                int type = nbt.getInteger("type");
+                String typeName = "Woodland";
+                if (type == 0) {
+                    typeName = "Woodland";
+                }
+                tooltip.add(String.format("Type: %s", typeName));
                 tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
                 tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
             }

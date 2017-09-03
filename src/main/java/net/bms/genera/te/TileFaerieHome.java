@@ -42,18 +42,12 @@ public class TileFaerieHome extends TileEntity implements ITickable {
 
     @Override
     public boolean hasCapability(Capability<?> cap, EnumFacing side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return super.hasCapability(cap, side);
+        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(cap, side);
     }
 
     @Override
     public <T> T getCapability(Capability<T> cap, EnumFacing side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) itemStackHandler;
-        }
-        return super.getCapability(cap, side);
+        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) itemStackHandler : super.getCapability(cap, side);
     }
 
     @Override

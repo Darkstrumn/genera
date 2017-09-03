@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class FaerieInformationProvider implements ICapabilitySerializable<NBTTagCompound> {
 
     @CapabilityInject(IFaerieInformation.class)
-    public static Capability<IFaerieInformation> FAERIE_INFORMATION_CAPABILITY = null;
+    static Capability<IFaerieInformation> FAERIE_INFORMATION_CAPABILITY = null;
     private final IFaerieInformation cap = FAERIE_INFORMATION_CAPABILITY.getDefaultInstance();
 
     @Override

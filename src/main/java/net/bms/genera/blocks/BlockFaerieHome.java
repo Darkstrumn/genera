@@ -35,7 +35,6 @@ public class BlockFaerieHome extends Block implements ITileEntityProvider{
         setCreativeTab(CreativeTabs.DECORATIONS);
         setUnlocalizedName("faerie_home");
         setRegistryName("faerie_home");
-
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
