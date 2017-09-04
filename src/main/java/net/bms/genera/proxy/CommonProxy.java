@@ -20,9 +20,11 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
+    // keep this for the future
     public void init(FMLInitializationEvent e) {
     }
 
+    // ditto
     public void postInit(FMLPostInitializationEvent e) {
 
     }

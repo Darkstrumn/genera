@@ -72,38 +72,33 @@ public class BlockFaerieHome extends Block implements ITileEntityProvider{
             return false;
         }
 
-        if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            if (((TileFaerieHome) te).canInteractWith(player)) {
-                IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) && ((TileFaerieHome) te).canInteractWith(player)) {
+            IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (itemHandler != null) {
                 if (player.getHeldItem(hand).getItem() == new ItemStack(GeneraItems.ItemGlassJar, 1, 1).getItem()) {
                     if (itemHandler.getStackInSlot(1) != ItemStack.EMPTY) {
                         TextComponentTranslation comp = new TextComponentTranslation("string.faerie_home.slot_taken");
                         comp.getStyle().setColor(TextFormatting.RED);
-
                         player.sendMessage(comp);
-                    }
-                    else if (itemHandler.getStackInSlot(1) == ItemStack.EMPTY) {
+                    } else if (itemHandler.getStackInSlot(1) == ItemStack.EMPTY) {
                         itemHandler.insertItem(1, player.getHeldItem(hand), false);
                         player.setHeldItem(hand, ItemStack.EMPTY);
                     }
-                }
-                else {
+                } else {
                     if (player.isSneaking()) {
                         if (player.getHeldItem(hand) == ItemStack.EMPTY) {
                             ItemStack stack = itemHandler.extractItem(1, 1, false);
-                            if (stack != null) {
+                            if (stack != ItemStack.EMPTY) {
                                 player.setHeldItem(hand, stack);
                             }
                         } else {
                             TextComponentTranslation comp = new TextComponentTranslation("string.player.inventory_full");
                             comp.getStyle().setColor(TextFormatting.RED);
-
                             player.sendMessage(comp);
                         }
                     } else if (!player.isSneaking()) {
                         TextComponentTranslation comp = new TextComponentTranslation("string.player.not_sneaking");
                         comp.getStyle().setColor(TextFormatting.RED);
-
                         player.sendMessage(comp);
                     }
                 }
