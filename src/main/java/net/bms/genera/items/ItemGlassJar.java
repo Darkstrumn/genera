@@ -28,7 +28,7 @@ import java.util.List;
 public class ItemGlassJar extends Item {
 
     public ItemGlassJar() {
-        setCreativeTab(CreativeTabs.MISC);
+        setCreativeTab(CreativeTabs.TOOLS);
         setUnlocalizedName("glass_jar");
         setRegistryName("glass_jar");
         setMaxStackSize(1);
@@ -83,8 +83,10 @@ public class ItemGlassJar extends Item {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        items.add(new ItemStack(this, 1, 0));
-        items.add(new ItemStack(this, 1, 1));
+        if (isInCreativeTab(CreativeTabs.TOOLS)) {
+            items.add(new ItemStack(this, 1, 0));
+            items.add(new ItemStack(this, 1, 1));
+        }
     }
 
     @Override
