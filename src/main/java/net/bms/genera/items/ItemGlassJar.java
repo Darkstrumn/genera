@@ -43,6 +43,7 @@ public class ItemGlassJar extends Item {
         return new FaerieInformationProvider();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
@@ -86,6 +87,7 @@ public class ItemGlassJar extends Item {
         items.add(new ItemStack(this, 1, 1));
     }
 
+    @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
