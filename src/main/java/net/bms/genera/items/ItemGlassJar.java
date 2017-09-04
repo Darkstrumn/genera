@@ -97,10 +97,9 @@ public class ItemGlassJar extends Item {
             NBTTagCompound nbt = stack.getTagCompound();
             if (nbt == null) return EnumActionResult.FAIL;
             EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"));
-            faerie.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+            faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
             worldIn.spawnEntity(faerie);
-            stack.setItemDamage(0);
-            player.setHeldItem(hand, stack);
+            player.setHeldItem(hand, new ItemStack(GeneraItems.ItemGlassJar, 1, 0));
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }

@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class TileFaerieHome extends TileEntity implements ITickable {
     public static final int SIZE = 6;
-    public static final int TIME_BETWEEN_GROWTH = 300;
+    public static final int TIME_BETWEEN_GROWTH = 600;
     public static int timeSinceLastGrowth = 0;
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override

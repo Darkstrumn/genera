@@ -8,6 +8,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
@@ -51,11 +53,13 @@ public class EntityFaerie extends EntityFlying {
         this.tasks.addTask(0, new AIRandomFly(this));
     }
 
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(faerieInformation.getMaxHealth());
     }
 
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (stack.getItem() == ItemGlassJar && stack.getItemDamage() == 0) {
@@ -79,5 +83,13 @@ public class EntityFaerie extends EntityFlying {
     @Override
     public <T> T getCapability(Capability<T> capObject, EnumFacing side) {
         return capObject == FAERIE_INFORMATION && side == EnumFacing.UP ? FAERIE_INFORMATION.cast(FAERIE_INFORMATION.getDefaultInstance()) : super.getCapability(capObject, side);
+    }
+
+    @Override
+    public void onEntityUpdate() {
+        super.onEntityUpdate();
+        EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
+        if (player == null) return;
+        player.addPotionEffect(new PotionEffect(Potion.getPotionById(21), 1));
     }
 }
