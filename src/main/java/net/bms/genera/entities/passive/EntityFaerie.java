@@ -1,10 +1,10 @@
 package net.bms.genera.entities.passive;
 
+import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.FaerieInformation;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
 import net.bms.genera.entities.ai.AIRandomFly;
 import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,27 +15,24 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
 /**
  * Created by ben on 3/25/17.
  */
-public class EntityFaerie extends EntityFlying {
+public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawnData{
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
-    private static IFaerieInformation faerieInformation = new FaerieInformation();
+    private IFaerieInformation faerieInformation = new FaerieInformation();
 
     public EntityFaerie(World worldIn) {
-        super(worldIn);
-        faerieInformation.setSize(0.1F);
-        faerieInformation.setMaxHealth(4.0D);
-        faerieInformation.setType(0);
-        setSize(faerieInformation.getSize(), faerieInformation.getSize());
+        this(worldIn, 2.0D, 0, 0.1F);
     }
 
-    public EntityFaerie(World worldIn, Double maxHealth, int type, float size) {
+    public EntityFaerie(World worldIn, double maxHealth, int type, float size) {
         super(worldIn);
         faerieInformation.setMaxHealth(maxHealth);
         faerieInformation.setType(type);
@@ -56,21 +53,22 @@ public class EntityFaerie extends EntityFlying {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(faerieInformation.getMaxHealth());
     }
 
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (stack.getItem() == ItemGlassJar && stack.getItemDamage() == 0) {
-            onKillCommand();
-            stack.setItemDamage(1);
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt == null) return false;
-            nbt.setFloat("size", faerieInformation.getSize());
-            nbt.setInteger("type", faerieInformation.getType());
-            nbt.setDouble("max_health", faerieInformation.getMaxHealth());
-            player.setHeldItem(hand, stack);
+        if (!player.world.isRemote) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (stack.getItem() == ItemGlassJar && stack.getItemDamage() == 0) {
+                onKillCommand();
+                stack.setItemDamage(1);
+                NBTTagCompound nbt = stack.getTagCompound();
+                if (nbt == null) return false;
+                nbt.setFloat("size", faerieInformation.getSize());
+                nbt.setInteger("type", faerieInformation.getType());
+                nbt.setDouble("max_health", faerieInformation.getMaxHealth());
+                player.setHeldItem(hand, stack);
+            }
         }
         return super.processInteract(player, hand);
     }
@@ -90,6 +88,37 @@ public class EntityFaerie extends EntityFlying {
         super.onEntityUpdate();
         EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
         if (player == null) return;
-        player.addPotionEffect(new PotionEffect(Potion.getPotionById(21), 1));
+        switch (faerieInformation.getType()) {
+            case 0: // Woodland
+                Potion healthBoost = Potion.getPotionById(21);
+                if (healthBoost == null) return;
+                if (!player.isPotionActive(healthBoost))
+                    player.addPotionEffect(new PotionEffect(healthBoost, ((int)faerieInformation.getMaxHealth()) * 300));
+                break;
+            case 1: // Underground
+                Potion haste = Potion.getPotionById(3);
+                if (haste == null) return;
+                if (!player.isPotionActive(haste))
+                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
+                break;
+        }
+
+
+    }
+
+    // calle by server
+    @Override
+    public void writeSpawnData(ByteBuf buffer) {
+        buffer.writeDouble(faerieInformation.getMaxHealth());
+        buffer.writeFloat(faerieInformation.getSize());
+        buffer.writeInt(faerieInformation.getType());
+    }
+
+    // called by client
+    @Override
+    public void readSpawnData(ByteBuf additionalData) {
+        faerieInformation.setType(additionalData.readInt());
+        faerieInformation.setSize(additionalData.readFloat());
+        faerieInformation.setMaxHealth(additionalData.readDouble());
     }
 }

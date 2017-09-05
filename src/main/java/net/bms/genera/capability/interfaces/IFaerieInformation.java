@@ -9,11 +9,11 @@ public interface IFaerieInformation {
     void setType(int type);
     int getType();
 
-    void setSize(Float size);
-    Float getSize();
+    void setSize(float size);
+    float getSize();
 
-    void setMaxHealth(Double maxHealth);
-    Double getMaxHealth();;
+    void setMaxHealth(double maxHealth);
+    double getMaxHealth();;
 
     void deserializeNBT(NBTTagCompound nbt);
     NBTTagCompound serializeNBT();

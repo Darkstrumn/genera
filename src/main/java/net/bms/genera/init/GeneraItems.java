@@ -25,6 +25,7 @@ public class GeneraItems {
 
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockFaerieHome).setRegistryName("faerie_home"));
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockNightshadeCrop).setRegistryName("nightshade"));
+        event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockWhiteMushroom).setRegistryName("white_mushroom"));
     }
 
     @SideOnly(Side.CLIENT)

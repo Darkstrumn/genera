@@ -8,9 +8,9 @@ import net.minecraft.nbt.NBTTagCompound;
  * Created by benjaminsutter on 7/3/17.
  */
 public class FaerieInformation implements IFaerieInformation {
-    private int type = 0;
-    private Float size = 0.1F;
-    private Double maxHealth = 4.0D;
+    private int type;
+    private float size;
+    private double maxHealth;
 
     @Override
     public void setType(int type) {
@@ -23,22 +23,22 @@ public class FaerieInformation implements IFaerieInformation {
     }
 
     @Override
-    public void setSize(Float size) {
+    public void setSize(float size) {
         this.size = size;
     }
 
     @Override
-    public Float getSize() {
+    public float getSize() {
         return this.size;
     }
 
     @Override
-    public void setMaxHealth(Double maxHealth) {
+    public void setMaxHealth(double maxHealth) {
         this.maxHealth = maxHealth;
     }
 
     @Override
-    public Double getMaxHealth() {
+    public double getMaxHealth() {
         return this.maxHealth;
     }
 

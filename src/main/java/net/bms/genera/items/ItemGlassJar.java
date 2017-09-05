@@ -51,9 +51,14 @@ public class ItemGlassJar extends Item {
             NBTTagCompound nbt = stack.getTagCompound();
             if (nbt == null) return;
             int type = nbt.getInteger("type");
-            String typeName = "Woodland";
-            if (type == 0) {
-                typeName = "Woodland";
+            String typeName = null;
+            switch (type) {
+                case 0:
+                    typeName = "Woodland";
+                    break;
+                case 1:
+                    typeName = "Underground";
+                    break;
             }
             tooltip.add(String.format("Type: %s", typeName));
             tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
@@ -83,7 +88,7 @@ public class ItemGlassJar extends Item {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (isInCreativeTab(CreativeTabs.TOOLS)) {
+        if (isInCreativeTab(tab)) {
             items.add(new ItemStack(this, 1, 0));
             items.add(new ItemStack(this, 1, 1));
         }
@@ -92,14 +97,17 @@ public class ItemGlassJar extends Item {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        ItemStack stack = player.getHeldItem(hand);
-        if (stack.getMetadata() == 1 && !(worldIn.getTileEntity(pos) instanceof TileFaerieHome)) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt == null) return EnumActionResult.FAIL;
-            EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"));
-            faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
-            worldIn.spawnEntity(faerie);
-            player.setHeldItem(hand, new ItemStack(GeneraItems.ItemGlassJar, 1, 0));
+        if (!worldIn.isRemote) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (stack.getMetadata() == 1 && !(worldIn.getTileEntity(pos) instanceof TileFaerieHome)) {
+                NBTTagCompound nbt = stack.getTagCompound();
+                if (nbt == null) return EnumActionResult.FAIL;
+                EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"));
+                faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
+                worldIn.spawnEntity(faerie);
+                player.setHeldItem(hand, new ItemStack(GeneraItems.ItemGlassJar, 1, 0));
+                return EnumActionResult.SUCCESS;
+            }
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
