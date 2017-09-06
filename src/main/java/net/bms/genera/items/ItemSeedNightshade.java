@@ -46,9 +46,11 @@ public class ItemSeedNightshade extends Item implements IPlantable {
         IBlockState state = worldIn.getBlockState(pos);
         IBlockState stateUp = worldIn.getBlockState(pos.up());
 
-        if (state.getBlock().canSustainPlant(state, worldIn, pos, facing, this) &&
-                stateUp.getBlock() == Blocks.AIR)
+        if (state.getBlock().canSustainPlant(state, worldIn, pos, facing, this) && stateUp.getBlock() == Blocks.AIR) {
             worldIn.setBlockState(pos.up(), GeneraBlocks.BlockNightshadeCrop.getDefaultState());
+            player.setHeldItem(hand, ItemStack.EMPTY);
+        }
+
         return EnumActionResult.PASS;
     }
 

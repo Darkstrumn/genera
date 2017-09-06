@@ -4,8 +4,12 @@ import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.FaerieInformation;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
 import net.bms.genera.entities.ai.AIRandomFly;
+import net.bms.genera.init.GeneraBlocks;
 import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -16,6 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+
+import java.util.List;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
@@ -86,6 +92,17 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     @Override
     public void onEntityUpdate() {
         super.onEntityUpdate();
+
+        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, getEntityBoundingBox().grow((double) faerieInformation.getSize() + 1));
+        for (EntityItem item : items) {
+            if (faerieInformation.getType() == 0) {
+                if (item.getItem().getItem() == Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)) {
+                    int amount = item.getItem().getCount();
+                    item.setItem(new ItemStack(Item.getItemFromBlock(GeneraBlocks.BlockWhiteMushroom), amount, 0));
+                }
+            }
+        }
+
         EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
         if (player == null) return;
         switch (faerieInformation.getType()) {
@@ -93,20 +110,18 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                 Potion healthBoost = Potion.getPotionById(21);
                 if (healthBoost == null) return;
                 if (!player.isPotionActive(healthBoost))
-                    player.addPotionEffect(new PotionEffect(healthBoost, ((int)faerieInformation.getMaxHealth()) * 300));
+                    player.addPotionEffect(new PotionEffect(healthBoost, ((int)faerieInformation.getMaxHealth()) * 150));
                 break;
             case 1: // Underground
                 Potion haste = Potion.getPotionById(3);
                 if (haste == null) return;
                 if (!player.isPotionActive(haste))
-                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
+                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 150));
                 break;
         }
-
-
     }
 
-    // calle by server
+    // called by server
     @Override
     public void writeSpawnData(ByteBuf buffer) {
         buffer.writeDouble(faerieInformation.getMaxHealth());
