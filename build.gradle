@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //ONLY EDIT BELOW THIS LINE!!!!!!
 
-version = "0.0.4"
+version = "0.0.5"
 group = "net.bms.genera"
 archivesBaseName = "Genera"
 
