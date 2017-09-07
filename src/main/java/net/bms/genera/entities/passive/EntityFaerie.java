@@ -5,10 +5,12 @@ import net.bms.genera.capability.FaerieInformation;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
 import net.bms.genera.entities.ai.AIRandomFly;
 import net.bms.genera.init.GeneraBlocks;
+import net.bms.genera.init.GeneraItems;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -99,6 +101,12 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                 if (item.getItem().getItem() == Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)) {
                     int amount = item.getItem().getCount();
                     item.setItem(new ItemStack(Item.getItemFromBlock(GeneraBlocks.BlockWhiteMushroom), amount, 0));
+                }
+            }
+            else if (faerieInformation.getType() == 1) {
+                if (item.getItem().getItem() == Items.DYE && item.getItem().getMetadata() == 1) {
+                    int amount = item.getItem().getCount();
+                    item.setItem(new ItemStack(GeneraItems.ItemCinnabar, amount, 0));
                 }
             }
         }

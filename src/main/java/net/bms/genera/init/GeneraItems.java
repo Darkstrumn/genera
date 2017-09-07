@@ -1,5 +1,6 @@
 package net.bms.genera.init;
 
+import net.bms.genera.items.ItemCinnabar;
 import net.bms.genera.items.ItemGlassJar;
 import net.bms.genera.items.ItemSeedNightshade;
 import net.bms.genera.lib.RenderUtil;
@@ -15,13 +16,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GeneraItems {
     public static Item ItemSeedNightshade;
     public static Item ItemGlassJar;
+    public static Item ItemCinnabar;
 
     public static void init(RegistryEvent.Register<Item> event) {
         ItemSeedNightshade = new ItemSeedNightshade();
         ItemGlassJar = new ItemGlassJar();
+        ItemCinnabar = new ItemCinnabar();
 
         event.getRegistry().register(GeneraItems.ItemGlassJar);
         event.getRegistry().register(GeneraItems.ItemSeedNightshade);
+        event.getRegistry().register(GeneraItems.ItemCinnabar);
 
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockFaerieHome).setRegistryName("faerie_home"));
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockNightshadeCrop).setRegistryName("nightshade"));
@@ -32,8 +36,8 @@ public class GeneraItems {
     public static void initModels() {
         net.bms.genera.items.ItemGlassJar.initModel();
         RenderUtil.register(ItemSeedNightshade, 0, "nightshade_seed");
-        RenderUtil.register(Item.getItemFromBlock(GeneraBlocks.BlockNightshadeCrop), 0, "nightshade");
         RenderUtil.register(ItemGlassJar, 0, "glass_jar_empty");
         RenderUtil.register(ItemGlassJar, 1, "glass_jar_full");
+        RenderUtil.register(ItemCinnabar, 0, "cinnabar");
     }
 }
