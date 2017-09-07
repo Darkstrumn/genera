@@ -17,9 +17,10 @@ import java.util.Random;
  * Created by ben on 4/2/17.
  */
 public class TileFaerieHome extends TileEntity implements ITickable {
-    public static final int SIZE = 6;
-    public static final int TIME_BETWEEN_GROWTH = 600;
-    public static int timeSinceLastGrowth = 0;
+    private static final int SIZE = 6;
+    private static final int TIME_BETWEEN_GROWTH = 600;
+    private static int timeSinceLastGrowth = 0;
+
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
         protected void onContentsChanged(int slot) {

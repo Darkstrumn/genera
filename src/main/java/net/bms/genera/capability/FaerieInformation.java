@@ -11,6 +11,8 @@ public class FaerieInformation implements IFaerieInformation {
     private int type;
     private float size;
     private double maxHealth;
+    private int level;
+    private int current_exp;
 
     @Override
     public void setType(int type) {
@@ -40,6 +42,26 @@ public class FaerieInformation implements IFaerieInformation {
     @Override
     public double getMaxHealth() {
         return this.maxHealth;
+    }
+
+    @Override
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    @Override
+    public int getLevel() {
+        return this.level;
+    }
+
+    @Override
+    public void setCurrentExp(int exp) {
+        this.current_exp = exp;
+    }
+
+    @Override
+    public int getCurrentExp() {
+        return this.current_exp;
     }
 
     @Override

@@ -2,6 +2,7 @@ package net.bms.genera.entities.render;
 
 import net.bms.genera.entities.passive.EntityFaerie;
 import net.bms.genera.entities.render.models.ModelFaerie;
+import net.bms.genera.entities.render.models.ModelFaerieLightmap;
 import net.bms.genera.lib.Constants;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -21,6 +22,7 @@ public class RenderFaerie extends RenderLiving<EntityFaerie> {
 
     public RenderFaerie(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelFaerie(), 0.2F);
+        this.addLayer(new ModelFaerieLightmap(this));
     }
 
     @Nullable

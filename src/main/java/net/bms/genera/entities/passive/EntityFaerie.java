@@ -1,7 +1,6 @@
 package net.bms.genera.entities.passive;
 
 import io.netty.buffer.ByteBuf;
-import net.bms.genera.capability.FaerieInformation;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
 import net.bms.genera.entities.ai.AIRandomFly;
 import net.bms.genera.init.GeneraBlocks;
@@ -34,17 +33,20 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
-    private IFaerieInformation faerieInformation = new FaerieInformation();
+    private IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();
+    private static final int EXP_TO_LEVEL_UP = 100;
 
     public EntityFaerie(World worldIn) {
-        this(worldIn, 2.0D, 0, 0.1F);
+        this(worldIn, 2.0D, 0, 0.1F, 1);
     }
 
-    public EntityFaerie(World worldIn, double maxHealth, int type, float size) {
+    public EntityFaerie(World worldIn, double maxHealth, int type, float size, int level) {
         super(worldIn);
         faerieInformation.setMaxHealth(maxHealth);
         faerieInformation.setType(type);
         faerieInformation.setSize(size);
+        faerieInformation.setLevel(level);
+        faerieInformation.setCurrentExp(0);
         setSize(faerieInformation.getSize(), faerieInformation.getSize());
     }
 
@@ -75,6 +77,8 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                 nbt.setFloat("size", faerieInformation.getSize());
                 nbt.setInteger("type", faerieInformation.getType());
                 nbt.setDouble("max_health", faerieInformation.getMaxHealth());
+                nbt.setInteger("level", faerieInformation.getLevel());
+                nbt.setInteger("current_exp", faerieInformation.getCurrentExp());
                 player.setHeldItem(hand, stack);
             }
         }
@@ -99,16 +103,23 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         for (EntityItem item : items) {
             if (faerieInformation.getType() == 0) {
                 if (item.getItem().getItem() == Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 20);
                     int amount = item.getItem().getCount();
                     item.setItem(new ItemStack(Item.getItemFromBlock(GeneraBlocks.BlockWhiteMushroom), amount, 0));
                 }
             }
             else if (faerieInformation.getType() == 1) {
                 if (item.getItem().getItem() == Items.DYE && item.getItem().getMetadata() == 1) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 20);
                     int amount = item.getItem().getCount();
                     item.setItem(new ItemStack(GeneraItems.ItemCinnabar, amount, 0));
                 }
             }
+        }
+
+        if (faerieInformation.getCurrentExp() >= EXP_TO_LEVEL_UP) {
+            faerieInformation.setLevel(faerieInformation.getLevel() + 1);
+            faerieInformation.setCurrentExp(0);
         }
 
         EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
@@ -117,14 +128,34 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
             case 0: // Woodland
                 Potion healthBoost = Potion.getPotionById(21);
                 if (healthBoost == null) return;
-                if (!player.isPotionActive(healthBoost))
-                    player.addPotionEffect(new PotionEffect(healthBoost, ((int)faerieInformation.getMaxHealth()) * 150));
+                if (!player.isPotionActive(healthBoost)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(healthBoost, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
+                if (faerieInformation.getLevel() >= 3) {
+                    Potion health = Potion.getPotionById(6);
+                    if (health == null) return;
+                    if (!player.isPotionActive(health)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                }
                 break;
             case 1: // Underground
                 Potion haste = Potion.getPotionById(3);
                 if (haste == null) return;
-                if (!player.isPotionActive(haste))
-                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 150));
+                if (!player.isPotionActive(haste)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
+                if (faerieInformation.getLevel() >= 5) {
+                Potion nightVision = Potion.getPotionById(16);
+                if (nightVision == null) return;
+                if (!player.isPotionActive(nightVision)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(nightVision, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
+            }
                 break;
         }
     }
@@ -135,13 +166,39 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         buffer.writeDouble(faerieInformation.getMaxHealth());
         buffer.writeFloat(faerieInformation.getSize());
         buffer.writeInt(faerieInformation.getType());
+        buffer.writeInt(faerieInformation.getLevel());
+        buffer.writeInt(faerieInformation.getCurrentExp());
     }
 
     // called by client
     @Override
     public void readSpawnData(ByteBuf additionalData) {
-        faerieInformation.setType(additionalData.readInt());
-        faerieInformation.setSize(additionalData.readFloat());
         faerieInformation.setMaxHealth(additionalData.readDouble());
+        faerieInformation.setSize(additionalData.readFloat());
+        faerieInformation.setType(additionalData.readInt());
+        faerieInformation.setLevel(additionalData.readInt());
+        faerieInformation.setCurrentExp(additionalData.readInt());
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound comp) {
+        super.writeEntityToNBT(comp);
+
+        comp.setFloat("size", faerieInformation.getSize());
+        comp.setInteger("current_exp", faerieInformation.getCurrentExp());
+        comp.setInteger("type", faerieInformation.getType());
+        comp.setInteger("level", faerieInformation.getLevel());
+        comp.setDouble("max_health", faerieInformation.getMaxHealth());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound comp) {
+        super.readEntityFromNBT(comp);
+
+        faerieInformation.setSize(comp.getFloat("size"));
+        faerieInformation.setCurrentExp(comp.getInteger("current_exp"));
+        faerieInformation.setType(comp.getInteger("type"));
+        faerieInformation.setLevel(comp.getInteger("level"));
+        faerieInformation.setMaxHealth(comp.getDouble("max_health"));
     }
 }

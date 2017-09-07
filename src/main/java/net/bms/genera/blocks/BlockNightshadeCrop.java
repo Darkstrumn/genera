@@ -31,7 +31,7 @@ public class BlockNightshadeCrop extends BlockGeneraCrop {
         super.updateTick(worldIn, pos, state, rand);
         if (!worldIn.isRemote) {
             if (state.getValue(AGE) == 2) {
-                EntityFaerie faerie = new EntityFaerie(worldIn, 4.0D, 0, 0.1F);
+                EntityFaerie faerie = new EntityFaerie(worldIn, 4.0D, 0, 0.1F, 1);
                 faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
                 worldIn.spawnEntity(faerie);
             }
