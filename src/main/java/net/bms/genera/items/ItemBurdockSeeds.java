@@ -16,14 +16,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-/**
- * Created by ben on 3/18/17.
- */
-public class ItemSeedNightshade extends Item implements IPlantable {
+public class ItemBurdockSeeds extends Item implements IPlantable {
 
-    public ItemSeedNightshade() {
-        setRegistryName("nightshade_seed");
-        setUnlocalizedName("nightshade_seed");
+    public ItemBurdockSeeds() {
+        setRegistryName("burdock_seed");
+        setUnlocalizedName("burdock_seed");
         setCreativeTab(CreativeTabs.MISC);
     }
 
@@ -34,7 +31,7 @@ public class ItemSeedNightshade extends Item implements IPlantable {
 
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return GeneraBlocks.BlockNightshadeCrop.getDefaultState();
+        return GeneraBlocks.BlockBurdockCrop.getDefaultState();
     }
 
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -43,10 +40,11 @@ public class ItemSeedNightshade extends Item implements IPlantable {
         IBlockState stateUp = worldIn.getBlockState(pos.up());
 
         if (state.getBlock().canSustainPlant(state, worldIn, pos, facing, this) && stateUp.getBlock() == Blocks.AIR) {
-            worldIn.setBlockState(pos.up(), GeneraBlocks.BlockNightshadeCrop.getDefaultState());
+            worldIn.setBlockState(pos.up(), GeneraBlocks.BlockBurdockCrop.getDefaultState());
             player.setHeldItem(hand, ItemStack.EMPTY);
         }
 
         return EnumActionResult.PASS;
     }
 }
+

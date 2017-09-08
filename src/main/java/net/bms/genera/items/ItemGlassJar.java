@@ -59,6 +59,9 @@ public class ItemGlassJar extends Item {
                 case 1:
                     typeName = "Underground";
                     break;
+                case 2:
+                    typeName = "Mountainous";
+                    break;
             }
             tooltip.add(String.format("Type: %s", typeName));
             tooltip.add(String.format("Size: %f", nbt.getFloat("size")));

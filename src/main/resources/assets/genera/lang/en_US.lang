@@ -2,10 +2,12 @@ item.nightshade_seed.name=Nightshade Seeds
 item.glass_jar_empty.name=Empty Glass Jar
 item.glass_jar_full.name=Full Glass Jar
 item.cinnabar.name=Cinnabar Shard
+item.burdock_seed.name=Burdock Seeds
 
 tile.nightshade.name=Nightshade
 tile.faerie_home.name=Faerie Enclosure
 tile.white_mushroom.name=White Mushroom
+tile.burdock.name=Burdock
 
 string.player.not_sneaking=You must be sneaking to extract items!
 string.player.inventory_full=You must use an empty hand!

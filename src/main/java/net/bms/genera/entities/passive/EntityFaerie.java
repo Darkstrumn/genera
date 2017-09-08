@@ -17,6 +17,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -25,6 +26,8 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import java.util.List;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
+
+// TODO: Faerie can escape jars in chests, but not jars in Faerie Enclosures
 
 /**
  * Created by ben on 3/25/17.
@@ -103,16 +106,24 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         for (EntityItem item : items) {
             if (faerieInformation.getType() == 0) {
                 if (item.getItem().getItem() == Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 20);
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
                     int amount = item.getItem().getCount();
+                    world.spawnParticle(EnumParticleTypes.HEART, (double) item.posX, (double) item.posY, (double) item.posZ, 0.5D, 0.5D, 0.5D);
                     item.setItem(new ItemStack(Item.getItemFromBlock(GeneraBlocks.BlockWhiteMushroom), amount, 0));
                 }
             }
             else if (faerieInformation.getType() == 1) {
                 if (item.getItem().getItem() == Items.DYE && item.getItem().getMetadata() == 1) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 20);
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
                     int amount = item.getItem().getCount();
+                    world.spawnParticle(EnumParticleTypes.HEART, (double) item.posX, (double) item.posY, (double) item.posZ, 0.5D, 0.5D, 0.5D);
                     item.setItem(new ItemStack(GeneraItems.ItemCinnabar, amount, 0));
+                }
+                else if (item.getItem().getItem() == Items.CARROT) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    int amount = item.getItem().getCount();
+                    world.spawnParticle(EnumParticleTypes.HEART, (double) item.posX, (double) item.posY, (double) item.posZ, 0.5D, 0.5D, 0.5D);
+                    item.setItem(new ItemStack(GeneraItems.ItemBurdockSeeds, amount, 0));
                 }
             }
         }
@@ -156,6 +167,14 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                     player.addPotionEffect(new PotionEffect(nightVision, ((int) faerieInformation.getMaxHealth()) * 300));
                 }
             }
+                break;
+            case 2: // Mountainous
+                Potion jump_boost = Potion.getPotionById(8);
+                if (jump_boost == null) return;
+                if (!player.isPotionActive(jump_boost)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(jump_boost, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
                 break;
         }
     }
