@@ -31,14 +31,14 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
         setCreativeTab(null);
         setHardness(0.0F);
         disableStats();
-        setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
     }
 
     public void grow(IBlockState state, World worldIn, BlockPos pos) {
-        int growStage = state.getValue(AGE).intValue() + 1;
+        int growStage = state.getValue(AGE) + 1;
         if (growStage > 2)
             growStage = 2;
-        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(growStage)));
+        worldIn.setBlockState(pos, state.withProperty(AGE, growStage));
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -62,7 +62,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
 
     @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-        return state.getValue(AGE).intValue() < 2;
+        return state.getValue(AGE) < 2;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
 
         if (worldIn.getLightFromNeighbors(pos.up()) >= 1)
         {
-            int i = state.getValue(AGE).intValue();
+            int i = state.getValue(AGE);
 
             if (i < 2)
             {
@@ -84,7 +84,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
 
                 if (rand.nextInt((int)(25.0F / f) + 1) == 0)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(i + 1)), 2);
+                    worldIn.setBlockState(pos, state.withProperty(AGE, i + 1), 2);
                 }
             }
         }
@@ -149,7 +149,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(AGE).intValue();
+        return state.getValue(AGE);
     }
 
     @Override

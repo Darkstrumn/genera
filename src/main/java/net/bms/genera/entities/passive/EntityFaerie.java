@@ -27,7 +27,7 @@ import java.util.List;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
-// TODO: Faerie can escape jars in chests, but not jars in Faerie Enclosures
+// TODO: Faerie can escape jars in chests, but not jars in Faerie Enclosures; this may not be possible
 
 /**
  * Created by ben on 3/25/17.
@@ -108,7 +108,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                 if (item.getItem().getItem() == Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)) {
                     faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
                     int amount = item.getItem().getCount();
-                    world.spawnParticle(EnumParticleTypes.HEART, (double) item.posX, (double) item.posY, (double) item.posZ, 0.5D, 0.5D, 0.5D);
+                    world.spawnParticle(EnumParticleTypes.HEART, item.posX, item.posY, item.posZ, 0.5D, 0.5D, 0.5D);
                     item.setItem(new ItemStack(Item.getItemFromBlock(GeneraBlocks.BlockWhiteMushroom), amount, 0));
                 }
             }

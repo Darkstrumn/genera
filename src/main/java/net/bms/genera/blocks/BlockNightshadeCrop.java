@@ -3,6 +3,7 @@ package net.bms.genera.blocks;
 import net.bms.genera.entities.passive.EntityFaerie;
 import net.bms.genera.init.GeneraItems;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,6 +36,13 @@ public class BlockNightshadeCrop extends BlockGeneraCrop {
                 faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
                 worldIn.spawnEntity(faerie);
             }
+            if (!(worldIn.getBiome(pos) == Biomes.FOREST ||
+                    worldIn.getBiome(pos) == Biomes.FOREST_HILLS ||
+                    worldIn.getBiome(pos) == Biomes.TAIGA ||
+                    worldIn.getBiome(pos) == Biomes.TAIGA_HILLS) && state.getValue(AGE) >= 1) {
+                worldIn.setBlockState(pos, state.withProperty(AGE, 0));
+            }
         }
+
     }
 }

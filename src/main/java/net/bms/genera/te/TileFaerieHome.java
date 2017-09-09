@@ -64,7 +64,7 @@ public class TileFaerieHome extends TileEntity implements ITickable {
         timeSinceLastGrowth++;
         if (timeSinceLastGrowth >= TIME_BETWEEN_GROWTH) {
             Random rand = new Random();
-            for (int slot = 0; slot <= SIZE; slot++) {
+            for (int slot = 0; slot <= SIZE - 1; slot++) {
                 float selector = rand.nextFloat();
                 if (selector >= 0.0 && selector <= 0.6) {
                     if (cap.getStackInSlot(slot) == ItemStack.EMPTY) return;
