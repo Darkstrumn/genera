@@ -38,6 +38,11 @@ public class BlockFaerieHome extends Block implements ITileEntityProvider{
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {

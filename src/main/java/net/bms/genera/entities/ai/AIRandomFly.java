@@ -42,7 +42,7 @@ public class AIRandomFly extends EntityAIBase
      */
     public boolean continueExecuting()
     {
-        return false;
+        return true;
     }
 
     /**

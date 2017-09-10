@@ -2,10 +2,10 @@ package net.bms.genera.entities.passive;
 
 import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
-import net.bms.genera.entities.ai.AIRandomFly;
 import net.bms.genera.init.GeneraBlocks;
 import net.bms.genera.init.GeneraItems;
-import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -27,12 +27,12 @@ import java.util.List;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
-// TODO: Faerie can escape jars in chests, but not jars in Faerie Enclosures; this may not be possible
+// TODO: Faeries can escape jars in chests, but not jars in Faerie Enclosures; this may not be possible
 
 /**
  * Created by ben on 3/25/17.
  */
-public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawnData{
+public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpawnData{
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
@@ -60,7 +60,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(0, new AIRandomFly(this));
+        this.tasks.addTask(0, new EntityAIWanderAvoidWater( this, 1.0D));
     }
 
     @Override

@@ -2,13 +2,16 @@ package net.bms.genera.event;
 
 import net.bms.genera.init.GeneraBlocks;
 import net.bms.genera.init.GeneraItems;
+import net.bms.genera.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,6 +32,13 @@ public class EventHandler {
                     new ItemStack(GeneraItems.ItemSeedNightshade,
                             MathHelper.getInt(event.getWorld().rand, 0, 1))));
         }
+    }
+
+    @SubscribeEvent
+    public void stitch(TextureStitchEvent.Pre event){
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID, "entity/faerie"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/wing_bottom"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/wing_top"));
     }
 
     @SubscribeEvent

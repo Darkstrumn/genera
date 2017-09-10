@@ -12,12 +12,12 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     public void preInit(FMLPreInitializationEvent e) {
         super.preInit(e);
+        GeneraEntities.initModels();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void init(FMLInitializationEvent e) {
         super.init(e);
-        GeneraEntities.initModels();
     }
 }

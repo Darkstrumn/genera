@@ -17,12 +17,12 @@ public class GeneraEntities {
 
     public static void init() {
         EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID,"faerie"), EntityFaerie.class,
-                "faerie", 1, Genera.instance, 64, 3, true,
+                "faerie", 1, Genera.instance, 64, 15, true,
                 0xffff00, 0xe5d158);
     }
 
     @SideOnly(Side.CLIENT)
     public static void initModels() {
-        RenderingRegistry.registerEntityRenderingHandler(EntityFaerie.class, RenderFaerie.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityFaerie.class, RenderFaerie::new);
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "genera:blocks/burdock_middle_2"
+  }
+}
