@@ -3,6 +3,7 @@ package net.bms.genera.event;
 import net.bms.genera.init.GeneraBlocks;
 import net.bms.genera.init.GeneraItems;
 import net.bms.genera.lib.Constants;
+import net.bms.genera.rituals.RitualRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -16,6 +17,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.io.IOException;
 
 /**
  * Created by ben on 3/19/17.
@@ -49,6 +52,16 @@ public class EventHandler {
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> event) {
         GeneraBlocks.init(event);
+    }
+
+    @SubscribeEvent
+    public void registerRituals(RegistryEvent.Register<RitualRecipe> event) {
+        try {
+            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "cinnabar_ritual"))
+            .setRegistryName("cinnabar_ritual"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SubscribeEvent

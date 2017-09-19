@@ -1,0 +1,6 @@
+{
+  "faerie_type": 0,
+  "group": "Genera",
+  "ingredient": ["minecraft:brown_mushroom", 0],
+  "result": ["genera:white_mushroom", 1, 0]
+}

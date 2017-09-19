@@ -2,14 +2,11 @@ package net.bms.genera.entities.passive;
 
 import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
-import net.bms.genera.init.GeneraBlocks;
-import net.bms.genera.init.GeneraItems;
+import net.bms.genera.rituals.RitualRecipe;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,12 +14,15 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Iterator;
 import java.util.List;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
@@ -101,82 +101,12 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
     @Override
     public void onEntityUpdate() {
         super.onEntityUpdate();
-
-        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, getEntityBoundingBox().grow((double) faerieInformation.getSize() + 1));
-        for (EntityItem item : items) {
-            if (faerieInformation.getType() == 0) {
-                if (item.getItem().getItem() == Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    int amount = item.getItem().getCount();
-                    world.spawnParticle(EnumParticleTypes.HEART, item.posX, item.posY, item.posZ, 0.5D, 0.5D, 0.5D);
-                    item.setItem(new ItemStack(Item.getItemFromBlock(GeneraBlocks.BlockWhiteMushroom), amount, 0));
-                }
-            }
-            else if (faerieInformation.getType() == 1) {
-                if (item.getItem().getItem() == Items.DYE && item.getItem().getMetadata() == 1) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    int amount = item.getItem().getCount();
-                    world.spawnParticle(EnumParticleTypes.HEART, (double) item.posX, (double) item.posY, (double) item.posZ, 0.5D, 0.5D, 0.5D);
-                    item.setItem(new ItemStack(GeneraItems.ItemCinnabar, amount, 0));
-                }
-                else if (item.getItem().getItem() == Items.CARROT) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    int amount = item.getItem().getCount();
-                    world.spawnParticle(EnumParticleTypes.HEART, (double) item.posX, (double) item.posY, (double) item.posZ, 0.5D, 0.5D, 0.5D);
-                    item.setItem(new ItemStack(GeneraItems.ItemBurdockSeeds, amount, 0));
-                }
-            }
-        }
-
+        runRituals();
         if (faerieInformation.getCurrentExp() >= EXP_TO_LEVEL_UP) {
             faerieInformation.setLevel(faerieInformation.getLevel() + 1);
             faerieInformation.setCurrentExp(0);
         }
-
-        EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
-        if (player == null) return;
-        switch (faerieInformation.getType()) {
-            case 0: // Woodland
-                Potion healthBoost = Potion.getPotionById(21);
-                if (healthBoost == null) return;
-                if (!player.isPotionActive(healthBoost)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(healthBoost, ((int) faerieInformation.getMaxHealth()) * 300));
-                }
-                if (faerieInformation.getLevel() >= 3) {
-                    Potion health = Potion.getPotionById(6);
-                    if (health == null) return;
-                    if (!player.isPotionActive(health)) {
-                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                        player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
-                    }
-                }
-                break;
-            case 1: // Underground
-                Potion haste = Potion.getPotionById(3);
-                if (haste == null) return;
-                if (!player.isPotionActive(haste)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
-                }
-                if (faerieInformation.getLevel() >= 5) {
-                Potion nightVision = Potion.getPotionById(16);
-                if (nightVision == null) return;
-                if (!player.isPotionActive(nightVision)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(nightVision, ((int) faerieInformation.getMaxHealth()) * 300));
-                }
-            }
-                break;
-            case 2: // Mountainous
-                Potion jump_boost = Potion.getPotionById(8);
-                if (jump_boost == null) return;
-                if (!player.isPotionActive(jump_boost)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(jump_boost, ((int) faerieInformation.getMaxHealth()) * 300));
-                }
-                break;
-        }
+        addPotionEffects();
     }
 
     // called by server
@@ -219,5 +149,82 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
         faerieInformation.setType(comp.getInteger("type"));
         faerieInformation.setLevel(comp.getInteger("level"));
         faerieInformation.setMaxHealth(comp.getDouble("max_health"));
+    }
+
+    private void runRituals() {
+        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, getEntityBoundingBox().grow((double) faerieInformation.getSize() + 1));
+        if (!items.isEmpty()) {
+            Iterator<RitualRecipe> iterator = GameRegistry.findRegistry(RitualRecipe.class).iterator();
+            for (EntityItem item : items) {
+                while (iterator.hasNext()) {
+                    RitualRecipe nextRitual = iterator.next();
+                    if (faerieInformation.getType() != nextRitual.getFaerieType()) break;
+                    String[] ingredientArray = nextRitual.getIngredient();
+                    IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
+                    if (itemRegistry != null) {
+                        ResourceLocation resOne = new ResourceLocation(ingredientArray[0]);
+                        if (itemRegistry.containsKey(resOne) &&
+                                item.getItem().getItem() == itemRegistry.getValue(resOne) &&
+                                item.getItem().getMetadata() == Integer.parseInt(ingredientArray[1])) {
+                            String[] resultArray = nextRitual.getResult();
+                            ResourceLocation resourceLocation = new ResourceLocation(resultArray[0]);
+                            if (itemRegistry.containsKey(resourceLocation)) {
+                                Item resultItem = itemRegistry.getValue(resourceLocation);
+                                if (resultItem != null)
+                                    item.setItem(new ItemStack(resultItem, Integer.parseInt(resultArray[1]),
+                                            Integer.parseInt(resultArray[2])));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void addPotionEffects() {
+        EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
+        if (player == null) return;
+        switch (faerieInformation.getType()) {
+            case 0: // Woodland
+                Potion healthBoost = Potion.getPotionById(21);
+                if (healthBoost == null) return;
+                if (!player.isPotionActive(healthBoost)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(healthBoost, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
+                if (faerieInformation.getLevel() >= 3) {
+                    Potion health = Potion.getPotionById(6);
+                    if (health == null) return;
+                    if (!player.isPotionActive(health)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                }
+                break;
+            case 1: // Underground
+                Potion haste = Potion.getPotionById(3);
+                if (haste == null) return;
+                if (!player.isPotionActive(haste)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
+                if (faerieInformation.getLevel() >= 5) {
+                    Potion nightVision = Potion.getPotionById(16);
+                    if (nightVision == null) return;
+                    if (!player.isPotionActive(nightVision)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(nightVision, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                }
+                break;
+            case 2: // Mountainous
+                Potion jump_boost = Potion.getPotionById(8);
+                if (jump_boost == null) return;
+                if (!player.isPotionActive(jump_boost)) {
+                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                    player.addPotionEffect(new PotionEffect(jump_boost, ((int) faerieInformation.getMaxHealth()) * 300));
+                }
+                break;
+        }
     }
 }

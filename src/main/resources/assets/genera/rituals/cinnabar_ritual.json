@@ -1,0 +1,6 @@
+{
+  "faerie_type": 1,
+  "group": "Genera",
+  "ingredient": ["minecraft:dye", 1],
+  "result": ["genera:cinnabar", 2, 0]
+}
