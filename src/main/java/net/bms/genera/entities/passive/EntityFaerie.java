@@ -3,8 +3,9 @@ package net.bms.genera.entities.passive;
 import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
 import net.bms.genera.rituals.RitualRecipe;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,6 +25,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
@@ -32,7 +34,7 @@ import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 /**
  * Created by ben on 3/25/17.
  */
-public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpawnData{
+public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawnData{
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
@@ -50,7 +52,7 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
         faerieInformation.setSize(size);
         faerieInformation.setLevel(level);
         faerieInformation.setCurrentExp(0);
-        setSize(faerieInformation.getSize(), faerieInformation.getSize());
+        setSize(0.5F, 0.5F);
     }
 
     @Override
@@ -60,7 +62,7 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAIWanderAvoidWater( this, 1.0D));
+        this.tasks.addTask(1, new EntityFaerie.AIRandomFly(this));
     }
 
     @Override
@@ -73,7 +75,7 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
         if (!player.world.isRemote) {
             ItemStack stack = player.getHeldItem(hand);
             if (stack.getItem() == ItemGlassJar && stack.getItemDamage() == 0) {
-                onKillCommand();
+                this.setDead();
                 stack.setItemDamage(1);
                 NBTTagCompound nbt = stack.getTagCompound();
                 if (nbt == null) return false;
@@ -100,7 +102,6 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
 
     @Override
     public void onEntityUpdate() {
-        super.onEntityUpdate();
         runRituals();
         if (faerieInformation.getCurrentExp() >= EXP_TO_LEVEL_UP) {
             faerieInformation.setLevel(faerieInformation.getLevel() + 1);
@@ -225,6 +226,58 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
                     player.addPotionEffect(new PotionEffect(jump_boost, ((int) faerieInformation.getMaxHealth()) * 300));
                 }
                 break;
+        }
+    }
+
+    static class AIRandomFly extends EntityAIBase
+    {
+        private final EntityFlying parentEntity;
+
+        public AIRandomFly(EntityFlying entity)
+        {
+            this.parentEntity = entity;
+            this.setMutexBits(1);
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute()
+        {
+            EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+
+            if (!entitymovehelper.isUpdating())
+            {
+                return true;
+            }
+            else
+            {
+                double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+                double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+                double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                return d3 < 1.0D || d3 > 3600.0D;
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting()
+        {
+            return false;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting()
+        {
+            Random random = this.parentEntity.getRNG();
+            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2 + 2.0, 1.0D);
         }
     }
 }

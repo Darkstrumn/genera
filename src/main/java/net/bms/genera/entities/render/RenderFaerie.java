@@ -48,7 +48,7 @@ public class RenderFaerie extends Render<EntityFaerie> implements IRenderFactory
             case 2:
                 wing_top = String.format("%s:entity/faerie/mountain/wing_top", Constants.MODID);
                 wing_bottom = String.format("%s:entity/faerie/mountain/wing_bottom", Constants.MODID);
-                body_texture = String.format("%s:entity/faerie/wood/mountain/body", Constants.MODID);
+                body_texture = String.format("%s:entity/faerie/mountain/body", Constants.MODID);
                 break;
         }
 
