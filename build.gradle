@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //ONLY EDIT BELOW THIS LINE!!!!!!
 
-version = "0.0.5"
+version = "0.0.6-version-hotfix"
 group = "net.bms.genera"
 archivesBaseName = "Genera"
 
@@ -20,9 +20,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.1-14.22.0.2467"
+    version = "1.12.2-14.23.0.2486"
     runDir = "run"
-    mappings = "snapshot_20170902"
+    mappings = "snapshot_20170919"
 }
 
 processResources {
