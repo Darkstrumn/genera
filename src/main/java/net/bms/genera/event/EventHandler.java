@@ -64,7 +64,11 @@ public class EventHandler {
     public void registerRituals(RegistryEvent.Register<RitualRecipe> event) {
         try {
             event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "cinnabar_ritual"))
-            .setRegistryName("cinnabar_ritual"));
+                    .setRegistryName("cinnabar_ritual"));
+            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "white_mushroom_ritual"))
+                    .setRegistryName("white_mushroom_ritual"));
+            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "burdock_seed_ritual"))
+                    .setRegistryName("burdock_seed_ritual"));
         } catch (IOException e) {
             e.printStackTrace();
         }

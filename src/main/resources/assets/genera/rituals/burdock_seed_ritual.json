@@ -1,5 +1,5 @@
 {
-  "faerie_type": 1,
+  "faerie_type": 0,
   "group": "Genera",
   "ingredient": ["minecraft:carrot", 0],
   "result": ["genera:burdock_seed", 2, 0]
