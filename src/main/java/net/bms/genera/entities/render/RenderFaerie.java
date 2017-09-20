@@ -12,11 +12,11 @@ import static net.minecraft.client.renderer.GlStateManager.*;
 
 public class RenderFaerie extends Render<EntityFaerie> implements IRenderFactory<EntityFaerie> {
 
-    private ModelHandle body = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/body"));
-    private ModelHandle wing_r_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/wing_right"));
-    private ModelHandle wing_r_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/wing_right"));
-    private ModelHandle wing_l_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/wing_left"));
-    private ModelHandle wing_l_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/wing_left"));
+    private ModelHandle body = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/body"));;
+    private ModelHandle wing_r_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_right"));;
+    private ModelHandle wing_r_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_right"));;
+    private ModelHandle wing_l_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_left"));;
+    private ModelHandle wing_l_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_left"));;
 
     public RenderFaerie(RenderManager renderManager) {
         super(renderManager);
@@ -30,9 +30,27 @@ public class RenderFaerie extends Render<EntityFaerie> implements IRenderFactory
 
     @Override
     public void doRender(EntityFaerie entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        String wing_top = String.format("%s:entity/faerie/wood/wing_top", Constants.MODID);
+        String wing_bottom = String.format("%s:entity/faerie/wood/wing_bottom", Constants.MODID);
+        String body_texture = String.format("%s:entity/faerie/wood/body", Constants.MODID);
 
-        String wing_top = String.format("%s:entity/wing_top", Constants.MODID);
-        String wing_bottom = String.format("%s:entity/wing_bottom", Constants.MODID);
+        switch (entity.faerieInformation.getType()) {
+            case 0:
+                wing_top = String.format("%s:entity/faerie/wood/wing_top", Constants.MODID);
+                wing_bottom = String.format("%s:entity/faerie/wood/wing_bottom", Constants.MODID);
+                body_texture = String.format("%s:entity/faerie/wood/body", Constants.MODID);
+                break;
+            case 1:
+                wing_top = String.format("%s:entity/faerie/cave/wing_top", Constants.MODID);
+                wing_bottom = String.format("%s:entity/faerie/cave/wing_bottom", Constants.MODID);
+                body_texture = String.format("%s:entity/faerie/cave/body", Constants.MODID);
+                break;
+            case 2:
+                wing_top = String.format("%s:entity/faerie/mountain/wing_top", Constants.MODID);
+                wing_bottom = String.format("%s:entity/faerie/mountain/wing_bottom", Constants.MODID);
+                body_texture = String.format("%s:entity/faerie/wood/mountain/body", Constants.MODID);
+                break;
+        }
 
         if (!wing_r_top.getTextureReplacements().containsKey("0") || wing_r_top.getTextureReplacements().containsKey("0") && !wing_r_top.getTextureReplacements().get("0").equals(wing_top))
             wing_r_top = wing_r_top.replace("0", wing_top);
@@ -43,6 +61,9 @@ public class RenderFaerie extends Render<EntityFaerie> implements IRenderFactory
             wing_l_top = wing_l_top.replace("0", wing_top);
         if (!wing_l_bot.getTextureReplacements().containsKey("0") || wing_l_bot.getTextureReplacements().containsKey("0") && !wing_l_bot.getTextureReplacements().get("0").equals(wing_bottom))
             wing_l_bot = wing_l_bot.replace("0", wing_bottom);
+
+        if (!body.getTextureReplacements().containsKey("0") || body.getTextureReplacements().containsKey("0") && !body.getTextureReplacements().get("0").equals(body_texture))
+            body = body.replace("0", body_texture);
 
         double rotation =
                 Math.sin((double)entity.ticksExisted * 100d) * 20d; //fluid movement

@@ -36,7 +36,7 @@ public class EntityFaerie extends EntityCreature implements IEntityAdditionalSpa
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
-    private IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();
+    public IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();
     private static final int EXP_TO_LEVEL_UP = 100;
 
     public EntityFaerie(World worldIn) {

@@ -39,9 +39,15 @@ public class EventHandler {
 
     @SubscribeEvent
     public void stitch(TextureStitchEvent.Pre event){
-        event.getMap().registerSprite(new ResourceLocation(Constants.MODID, "entity/faerie"));
-        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/wing_bottom"));
-        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/wing_top"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/wood/body"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/wood/wing_bottom"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/wood/wing_top"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/cave/body"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/cave/wing_bottom"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/cave/wing_top"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/mountain/body"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/mountain/wing_bottom"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/mountain/wing_top"));
     }
 
     @SubscribeEvent
