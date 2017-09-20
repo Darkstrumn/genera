@@ -3,7 +3,7 @@
   "modid": "genera",
   "name": "Genera",
   "description": "Genera: Celtic magic for Minecraft",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "mcversion": "${mcversion}",
   "url": "https://minecraft.curseforge.com/projects/genera",
   "updateUrl": "",

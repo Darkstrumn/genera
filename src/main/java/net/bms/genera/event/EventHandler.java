@@ -17,6 +17,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 
@@ -37,6 +39,7 @@ public class EventHandler {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void stitch(TextureStitchEvent.Pre event){
         event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/wood/body"));
