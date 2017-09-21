@@ -38,7 +38,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
-    public IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();
+    private IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();
     private static final int EXP_TO_LEVEL_UP = 100;
 
     public EntityFaerie(World worldIn) {
