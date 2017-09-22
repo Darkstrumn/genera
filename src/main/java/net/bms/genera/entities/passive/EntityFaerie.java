@@ -160,6 +160,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                 while (iterator.hasNext()) {
                     RitualRecipe nextRitual = iterator.next();
                     if (faerieInformation.getType() != nextRitual.getFaerieType()) break;
+                    if (faerieInformation.getLevel() != nextRitual.getFaerieLevel()) break;
                     String[] ingredientArray = nextRitual.getIngredient();
                     IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
                     if (itemRegistry != null) {

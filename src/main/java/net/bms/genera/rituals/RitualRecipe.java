@@ -27,6 +27,11 @@ public class RitualRecipe extends IForgeRegistryEntry.Impl<RitualRecipe> {
         return element.getAsInt();
     }
 
+    public int getFaerieLevel() {
+        JsonElement element = jsonObject.get("faerie_level");
+        return element.getAsInt();
+    }
+
     public String[] getIngredient() {
         JsonElement element = jsonObject.get("ingredient");
         JsonArray array = element.getAsJsonArray();
