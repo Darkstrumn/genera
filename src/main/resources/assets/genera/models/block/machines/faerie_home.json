@@ -1,5 +1,6 @@
 {
     "textures": {
+        "particle": "blocks/planks_oak",
         "0": "blocks/planks_oak",
         "1": "blocks/pumpkin_side",
         "2": "blocks/pumpkin_top",

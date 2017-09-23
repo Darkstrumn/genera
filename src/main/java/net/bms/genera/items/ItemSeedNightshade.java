@@ -6,7 +6,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -44,7 +43,7 @@ public class ItemSeedNightshade extends Item implements IPlantable {
 
         if (state.getBlock().canSustainPlant(state, worldIn, pos, facing, this) && stateUp.getBlock() == Blocks.AIR) {
             worldIn.setBlockState(pos.up(), GeneraBlocks.BlockNightshadeCrop.getDefaultState());
-            player.setHeldItem(hand, ItemStack.EMPTY);
+            player.getHeldItem(hand).setCount(player.getHeldItem(hand).getCount() - 1);
         }
 
         return EnumActionResult.PASS;

@@ -34,7 +34,7 @@ import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 /**
  * Created by ben on 3/25/17.
  */
-public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawnData{
+public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawnData {
 
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
