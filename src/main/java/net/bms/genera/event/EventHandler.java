@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -36,12 +35,14 @@ public class EventHandler {
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getState().getBlock() == Blocks.TALLGRASS) {
-            event.getWorld().spawnEntity(new EntityItem(event.getWorld(),
-                    event.getPos().getX(),
-                    event.getPos().getY(),
-                    event.getPos().getZ(),
-                    new ItemStack(GeneraItems.ItemSeedNightshade,
-                            MathHelper.getInt(event.getWorld().rand, 0, 1))));
+            float randomValue = event.getWorld().rand.nextFloat();
+            if (randomValue >= 0.9) {
+                event.getWorld().spawnEntity(new EntityItem(event.getWorld(),
+                        event.getPos().getX(),
+                        event.getPos().getY(),
+                        event.getPos().getZ(),
+                        new ItemStack(GeneraItems.ItemSeedNightshade, 1)));
+            }
         }
     }
 
