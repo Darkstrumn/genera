@@ -7,16 +7,22 @@ import net.bms.genera.rituals.RitualRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,6 +57,22 @@ public class EventHandler {
         event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/mountain/body"));
         event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/mountain/wing_bottom"));
         event.getMap().registerSprite(new ResourceLocation(Constants.MODID,"entity/faerie/mountain/wing_top"));
+    }
+
+    @SubscribeEvent
+    public void playerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        ItemStack guideBookStack = new ItemStack(Items.WRITTEN_BOOK, 1);
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("title", new TextComponentTranslation("book.title.guide").getFormattedText());
+        nbt.setString("author", new TextComponentTranslation("book.author.guide").getFormattedText());
+        nbt.setInteger("generation", 2);
+        NBTTagList nbtList = new NBTTagList();
+        for (int index = 0; index <= 7; index++)
+            nbtList.appendTag(new NBTTagString(String.format("{\"text\": \"%s\"}", new TextComponentTranslation(String.format("book.pages.guide.%d", index)).getFormattedText())));
+        nbt.setTag("pages", nbtList);
+        guideBookStack.setTagCompound(nbt);
+        if (!event.player.inventory.hasItemStack(guideBookStack))
+            event.player.addItemStackToInventory(guideBookStack);
     }
 
     @SubscribeEvent
