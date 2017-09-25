@@ -8,21 +8,20 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-//ONLY EDIT BELOW THIS LINE!!!!!!
 
-version = "0.0.8"
+minecraft {
+    version = "1.12.2-14.23.0.2486"
+    runDir = "run"
+    mappings = "snapshot_20170919"
+}
+
+version = "${minecraft.version}-0.0.9"
 group = "net.bms.genera"
 archivesBaseName = "Genera"
 
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
-}
-
-minecraft {
-    version = "1.12.2-14.23.0.2486"
-    runDir = "run"
-    mappings = "snapshot_20170919"
 }
 
 processResources {
