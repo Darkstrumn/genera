@@ -1,0 +1,10 @@
+{
+  "homepage": "https://minecraft.curseforge.com/projects/genera",
+  "1.12.2": {
+    "0.0.8": "Fix some enclosure bugs, lower nightshade seed drop rate, add update checker."
+  },
+  "promos": {
+    "1.12.2-latest": "0.0.8",
+    "1.12.2-recommended": "0.0.8"
+  }
+}
