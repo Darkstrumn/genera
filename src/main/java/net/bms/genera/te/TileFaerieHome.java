@@ -67,13 +67,13 @@ public class TileFaerieHome extends TileEntity implements ITickable {
             float selector = rand.nextFloat();
             if (selector >= 0.0 && selector <= 0.6) {
                 if (cap.getStackInSlot(0) == ItemStack.EMPTY) return;
-                NBTTagCompound nbt = cap.getStackInSlot(rand.nextInt(6)).getTagCompound();
+                NBTTagCompound nbt = cap.getStackInSlot(0).getTagCompound();
                 if (nbt == null) return;
                 nbt.setFloat("size", nbt.getFloat("size") + 0.02F);
             }
             else if (selector >= 0.7 && selector <= 1.0) {
                 if (cap.getStackInSlot(0) == ItemStack.EMPTY) return;
-                NBTTagCompound nbt = cap.getStackInSlot(rand.nextInt(6)).getTagCompound();
+                NBTTagCompound nbt = cap.getStackInSlot(0).getTagCompound();
                 if (nbt == null) return;
                 nbt.setDouble("max_health", nbt.getDouble("max_health") + 1.0D);
             }
