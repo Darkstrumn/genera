@@ -1,6 +1,7 @@
 {
   "faerie_type": 2,
-  "faerie_level": 2,
+  "faerie_level": 1,
+  "experience_cost": 30,
   "group": "Genera",
   "ingredient": ["minecraft:brown_mushroom", 0],
   "result": ["genera:white_mushroom", 1, 0]

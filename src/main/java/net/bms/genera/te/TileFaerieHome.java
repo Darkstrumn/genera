@@ -11,8 +11,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.Random;
-
 /**
  * Created by ben on 4/2/17.
  */
@@ -63,20 +61,13 @@ public class TileFaerieHome extends TileEntity implements ITickable {
         if (cap == null) return;
         timeSinceLastGrowth++;
         if (timeSinceLastGrowth >= TIME_BETWEEN_GROWTH) {
-            Random rand = new Random();
-            float selector = rand.nextFloat();
-            if (selector >= 0.0 && selector <= 0.6) {
-                if (cap.getStackInSlot(0) == ItemStack.EMPTY) return;
-                NBTTagCompound nbt = cap.getStackInSlot(0).getTagCompound();
-                if (nbt == null) return;
-                nbt.setFloat("size", nbt.getFloat("size") + 0.02F);
-            }
-            else if (selector >= 0.7 && selector <= 1.0) {
-                if (cap.getStackInSlot(0) == ItemStack.EMPTY) return;
-                NBTTagCompound nbt = cap.getStackInSlot(0).getTagCompound();
-                if (nbt == null) return;
-                nbt.setDouble("max_health", nbt.getDouble("max_health") + 1.0D);
-            }
+            if (cap.getStackInSlot(0) == ItemStack.EMPTY) return;
+            NBTTagCompound nbt = cap.getStackInSlot(0).getTagCompound();
+            if (nbt == null) return;
+            nbt.setFloat("size", nbt.getFloat("size") + 0.02F);
+            nbt.setDouble("max_health", nbt.getDouble("max_health") + 1.0D);
+            nbt.setInteger("current_exp", nbt.getInteger("current_exp") + 5);
+
             timeSinceLastGrowth = 0;
         }
     }

@@ -67,6 +67,7 @@ public class ItemGlassJar extends Item {
             tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
             tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
             tooltip.add(String.format("Level: %d", nbt.getInteger("level")));
+            tooltip.add(String.format("Level Experience: %d", nbt.getInteger("current_exp")));
         }
     }
 
@@ -106,7 +107,7 @@ public class ItemGlassJar extends Item {
             if (stack.getMetadata() == 1 && !(worldIn.getTileEntity(pos) instanceof TileFaerieHome)) {
                 NBTTagCompound nbt = stack.getTagCompound();
                 if (nbt == null) return EnumActionResult.FAIL;
-                EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"), nbt.getInteger("level"));
+                EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"), nbt.getInteger("level"), nbt.getInteger("current_exp"));
                 faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
                 worldIn.spawnEntity(faerie);
                 player.setHeldItem(hand, new ItemStack(GeneraItems.ItemGlassJar, 1, 0));

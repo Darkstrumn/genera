@@ -15,6 +15,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -46,12 +47,16 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     }
 
     public EntityFaerie(World worldIn, double maxHealth, int type, float size, int level) {
+        this(worldIn, maxHealth, type, size, level, 0);
+    }
+
+    public EntityFaerie(World worldIn, double maxHealth, int type, float size, int level, int current_exp) {
         super(worldIn);
         faerieInformation.setMaxHealth(maxHealth);
         faerieInformation.setType(type);
         faerieInformation.setSize(size);
         faerieInformation.setLevel(level);
-        faerieInformation.setCurrentExp(0);
+        faerieInformation.setCurrentExp(current_exp);
         setSize(0.5F, 0.5F);
     }
 
@@ -107,6 +112,12 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
             faerieInformation.setLevel(faerieInformation.getLevel() + 1);
             faerieInformation.setCurrentExp(0);
         }
+        else if (faerieInformation.getCurrentExp() < 0) {
+            faerieInformation.setLevel(faerieInformation.getLevel() - 1);
+            faerieInformation.setCurrentExp(0);
+        }
+        if (faerieInformation.getLevel() < 0)
+            faerieInformation.setLevel(0);
         addPotionEffects();
     }
 
@@ -159,8 +170,15 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
             for (EntityItem item : items) {
                 while (iterator.hasNext()) {
                     RitualRecipe nextRitual = iterator.next();
-                    if (faerieInformation.getType() != nextRitual.getFaerieType()) break;
-                    if (faerieInformation.getLevel() != nextRitual.getFaerieLevel()) break;
+                    if (faerieInformation.getType() != nextRitual.getFaerieType() ||
+                            faerieInformation.getLevel() < nextRitual.getFaerieLevel() ||
+                            (faerieInformation.getLevel() == 0 && faerieInformation.getCurrentExp() == 0)) {
+                        if (!world.isRemote)
+                            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY, posZ, 0.5D, 0.5D, 0.5D);
+                        item.setItem(ItemStack.EMPTY);
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - nextRitual.getExpCost());
+                        break;
+                    }
                     String[] ingredientArray = nextRitual.getIngredient();
                     IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
                     if (itemRegistry != null) {
@@ -172,9 +190,13 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                             ResourceLocation resourceLocation = new ResourceLocation(resultArray[0]);
                             if (itemRegistry.containsKey(resourceLocation)) {
                                 Item resultItem = itemRegistry.getValue(resourceLocation);
-                                if (resultItem != null)
+                                if (resultItem != null) {
+                                    if (!world.isRemote)
+                                        world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, posX, posY, posZ, 0.5D, 0.5D, 0.5D);
                                     item.setItem(new ItemStack(resultItem, Integer.parseInt(resultArray[1]),
                                             Integer.parseInt(resultArray[2])));
+                                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - nextRitual.getExpCost());
+                                }
                             }
                         }
                     }
@@ -200,6 +222,12 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                     if (!player.isPotionActive(health)) {
                         faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
                         player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                }
+                if (faerieInformation.getLevel() >= 10) {
+                    if (player.getHealth() <= player.getMaxHealth() - 1.0) {
+                        player.setHealth(player.getMaxHealth());
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - 25);
                     }
                 }
                 break;
