@@ -1,8 +1,7 @@
 {
-  "parent": "builtin/generated",
+  "parent":"builtin/generated",
   "textures": {
-    "layer0": "genera:items/glass_jar_empty",
-    "layer1": "genera:items/glass_jar_full"
+    "layer0":"genera:blocks/burdock"
   },
   "display": {
     "thirdperson": {

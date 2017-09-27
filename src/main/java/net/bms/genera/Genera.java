@@ -7,6 +7,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Constants.MODID, version = Constants.VERSION, name = Constants.NAME, acceptedMinecraftVersions = "[1.12,)",
@@ -15,6 +17,8 @@ public class Genera
 {
     @SidedProxy(clientSide = "net.bms.genera.proxy.ClientProxy", serverSide = "net.bms.genera.proxy.ServerProxy")
     public static CommonProxy proxy;
+
+    public static final SimpleNetworkWrapper SIMPLEIMPL_INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Constants.MODID);
 
     @Mod.Instance
     public static Genera instance;

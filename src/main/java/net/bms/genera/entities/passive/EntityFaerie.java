@@ -2,6 +2,7 @@ package net.bms.genera.entities.passive;
 
 import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
+import net.bms.genera.init.GeneraItems;
 import net.bms.genera.rituals.RitualRecipe;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -40,7 +41,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
     public IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();
-    private static final int EXP_TO_LEVEL_UP = 100;
+    private static final int EXP_TO_LEVEL_UP = 50;
 
     public EntityFaerie(World worldIn) {
         this(worldIn, 2.0D, 0, 0.1F, 1);
@@ -118,7 +119,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         }
         if (faerieInformation.getLevel() < 0)
             faerieInformation.setLevel(0);
-        addPotionEffects();
+        addEffects();
     }
 
     // called by server
@@ -170,42 +171,44 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
             for (EntityItem item : items) {
                 while (iterator.hasNext()) {
                     RitualRecipe nextRitual = iterator.next();
-                    if (faerieInformation.getType() != nextRitual.getFaerieType() ||
-                            faerieInformation.getLevel() < nextRitual.getFaerieLevel() ||
-                            (faerieInformation.getLevel() == 0 && faerieInformation.getCurrentExp() == 0)) {
-                        if (!world.isRemote)
-                            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY, posZ, 0.5D, 0.5D, 0.5D);
-                        item.setItem(ItemStack.EMPTY);
-                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - nextRitual.getExpCost());
-                        break;
-                    }
-                    String[] ingredientArray = nextRitual.getIngredient();
-                    IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
-                    if (itemRegistry != null) {
-                        ResourceLocation resOne = new ResourceLocation(ingredientArray[0]);
-                        if (itemRegistry.containsKey(resOne) &&
-                                item.getItem().getItem() == itemRegistry.getValue(resOne) &&
-                                item.getItem().getMetadata() == Integer.parseInt(ingredientArray[1])) {
-                            String[] resultArray = nextRitual.getResult();
-                            ResourceLocation resourceLocation = new ResourceLocation(resultArray[0]);
-                            if (itemRegistry.containsKey(resourceLocation)) {
-                                Item resultItem = itemRegistry.getValue(resourceLocation);
-                                if (resultItem != null) {
-                                    if (!world.isRemote)
-                                        world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, posX, posY, posZ, 0.5D, 0.5D, 0.5D);
-                                    item.setItem(new ItemStack(resultItem, Integer.parseInt(resultArray[1]),
-                                            Integer.parseInt(resultArray[2])));
-                                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - nextRitual.getExpCost());
+                    if (faerieInformation.getType() == nextRitual.getFaerieType() &&
+                            faerieInformation.getLevel() >= nextRitual.getFaerieLevel() &&
+                            nextRitual.getFaerieLevel() >= nextRitual.getLevelCost()) {
+                        String[] ingredientArray = nextRitual.getIngredient();
+                        IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
+                        if (itemRegistry != null) {
+                            ResourceLocation resOne = new ResourceLocation(ingredientArray[0]);
+                            if (itemRegistry.containsKey(resOne) &&
+                                    item.getItem().getItem() == itemRegistry.getValue(resOne) &&
+                                    item.getItem().getMetadata() == Integer.parseInt(ingredientArray[1])) {
+                                String[] resultArray = nextRitual.getResult();
+                                ResourceLocation resourceLocation = new ResourceLocation(resultArray[0]);
+                                if (itemRegistry.containsKey(resourceLocation)) {
+                                    Item resultItem = itemRegistry.getValue(resourceLocation);
+                                    if (resultItem != null) {
+                                        if (world.isRemote)
+                                            world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, posX, posY, posZ, 0.5D, 0.5D, 0.5D);
+                                        item.setItem(new ItemStack(resultItem, Integer.parseInt(resultArray[1]),
+                                                Integer.parseInt(resultArray[2])));
+                                        faerieInformation.setLevel(faerieInformation.getLevel() - nextRitual.getLevelCost());
+                                    }
                                 }
                             }
                         }
                     }
+                    else if (nextRitual.getFaerieLevel() < nextRitual.getLevelCost()) {
+                        ResourceLocation ritualResLoc = nextRitual.getRegistryName();
+                        if (ritualResLoc != null)
+                            System.out.println(String.format("Incorrect JSON: %s: \"experience_cost\" must be less than or equal to \"faerie_level\".", ritualResLoc.toString()));
+                    }
+                    else if (world.isRemote)
+                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY, posZ, 0.5D, 0.5D, 0.5D);
                 }
             }
         }
     }
 
-    private void addPotionEffects() {
+    private void addEffects() {
         EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
         if (player == null) return;
         switch (faerieInformation.getType()) {
@@ -224,10 +227,22 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                         player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
                     }
                 }
-                if (faerieInformation.getLevel() >= 10) {
-                    if (player.getHealth() <= player.getMaxHealth() - 1.0) {
-                        player.setHealth(player.getMaxHealth());
-                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - 25);
+                if (faerieInformation.getLevel() >= 5) {
+                    boolean hasCinnabar = false;
+                    int slot = 0;
+                    for (; slot <= player.inventory.getSizeInventory(); slot++) {
+                        ItemStack stack = player.inventory.getStackInSlot(slot);
+                        if (stack.getItem() == GeneraItems.ItemCinnabar &&
+                                stack.getCount() >= 2) {
+                            hasCinnabar = true;
+                        }
+                    }
+                    if (hasCinnabar) {
+                        if (player.getHealth() <= player.getMaxHealth() - 1.0) {
+                            player.setHealth(player.getMaxHealth());
+                            faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - 25);
+                            player.inventory.decrStackSize(slot, 2);
+                        }
                     }
                 }
                 break;

@@ -9,9 +9,11 @@ tile.faerie_home.name=Faerie Enclosure
 tile.white_mushroom.name=White Mushroom
 tile.burdock.name=Burdock
 
+string.player.too_many_jars=You have too many jars in your hand. This enclosure only holds one.
 string.player.not_sneaking=You must be sneaking to extract items!
 string.player.inventory_full=You must use an empty hand!
 string.faerie_home.slot_taken=This Faerie Enclosure is full! Either take its occupants out or craft a new one.
+string.faerie_home.empty=This Faerie Enclosure is empty.
 
 entity.faerie.name=Faerie
 

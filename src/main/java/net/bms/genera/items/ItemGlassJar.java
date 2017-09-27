@@ -67,7 +67,7 @@ public class ItemGlassJar extends Item {
             tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
             tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
             tooltip.add(String.format("Level: %d", nbt.getInteger("level")));
-            tooltip.add(String.format("Level Experience: %d", nbt.getInteger("current_exp")));
+            tooltip.add(String.format("Experience Progress: %d", nbt.getInteger("current_exp")));
         }
     }
 
@@ -80,6 +80,11 @@ public class ItemGlassJar extends Item {
     public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool) {
         if (itemstack.getTagCompound() == null) {
             itemstack.setTagCompound(new NBTTagCompound());
+        }
+        NBTTagCompound nbt = itemstack.getTagCompound();
+        if (nbt != null && nbt.getInteger("current_exp") >= 100) {
+            nbt.setInteger("level", nbt.getInteger("level") + 1);
+            nbt.setInteger("current_exp", 0);
         }
     }
 

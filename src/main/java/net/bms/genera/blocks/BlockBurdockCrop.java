@@ -28,7 +28,7 @@ public class BlockBurdockCrop extends BlockGeneraCrop {
         super.updateTick(worldIn, pos, state, rand);
         if (!worldIn.isRemote) {
             if (state.getValue(AGE) == 2) {
-                EntityFaerie faerie = new EntityFaerie(worldIn, 6.0D, 2, 0.2F, 1);
+                EntityFaerie faerie = new EntityFaerie(worldIn, 6.0D, 2, 0.2F, 0);
                 faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
                 worldIn.spawnEntity(faerie);
             }

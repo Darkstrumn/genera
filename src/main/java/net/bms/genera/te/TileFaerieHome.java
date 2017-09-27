@@ -1,5 +1,8 @@
 package net.bms.genera.te;
 
+import net.bms.genera.Genera;
+import net.bms.genera.init.GeneraItems;
+import net.bms.genera.packets.MessageGlassJarUpdateStats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,9 +18,9 @@ import net.minecraftforge.items.ItemStackHandler;
  * Created by ben on 4/2/17.
  */
 public class TileFaerieHome extends TileEntity implements ITickable {
-    private static final int SIZE = 1;
-    private static final int TIME_BETWEEN_GROWTH = 600;
-    private static int timeSinceLastGrowth = 0;
+    private final int SIZE = 1;
+    private final int TIME_BETWEEN_GROWTH = 20 * 30;
+    private int timeSinceLastGrowth = 0;
 
     public ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
@@ -59,16 +62,23 @@ public class TileFaerieHome extends TileEntity implements ITickable {
     public void update() {
         IItemHandler cap = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (cap == null) return;
-        timeSinceLastGrowth++;
-        if (timeSinceLastGrowth >= TIME_BETWEEN_GROWTH) {
-            if (cap.getStackInSlot(0) == ItemStack.EMPTY) return;
-            NBTTagCompound nbt = cap.getStackInSlot(0).getTagCompound();
-            if (nbt == null) return;
-            nbt.setFloat("size", nbt.getFloat("size") + 0.02F);
-            nbt.setDouble("max_health", nbt.getDouble("max_health") + 1.0D);
-            nbt.setInteger("current_exp", nbt.getInteger("current_exp") + 5);
-
-            timeSinceLastGrowth = 0;
+        if (!world.isRemote) {
+            timeSinceLastGrowth++;
+            if (timeSinceLastGrowth >= TIME_BETWEEN_GROWTH) {
+                ItemStack stack = cap.getStackInSlot(0);
+                if (stack.getItem() == GeneraItems.ItemGlassJar &&
+                        stack.getMetadata() == 1 &&
+                        stack.getCount() == 1) {
+                    NBTTagCompound nbt = stack.getTagCompound();
+                    if (nbt != null) {
+                        nbt.setFloat("size", nbt.getFloat("size") + 0.02F);
+                        nbt.setDouble("max_health", nbt.getDouble("max_health") + 0.5D);
+                        nbt.setInteger("current_exp", nbt.getInteger("current_exp") + 25);
+                    }
+                }
+                Genera.SIMPLEIMPL_INSTANCE.sendToAll(new MessageGlassJarUpdateStats(stack, getPos()));
+                timeSinceLastGrowth = 0;
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ public class BlockWhiteMushroom extends BlockBush {
         super.updateTick(worldIn, pos, state, rand);
         if (!worldIn.isRemote) {
             if (pos.getY() <= 32) {
-                EntityFaerie faerie = new EntityFaerie(worldIn, 5.0D, 1, 0.3F, 1);
+                EntityFaerie faerie = new EntityFaerie(worldIn, 5.0D, 1, 0.3F, 0);
                 faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
                 worldIn.spawnEntity(faerie);
             }

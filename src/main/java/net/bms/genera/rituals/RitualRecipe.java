@@ -22,7 +22,7 @@ public class RitualRecipe extends IForgeRegistryEntry.Impl<RitualRecipe> {
         jsonObject = jsonParser.fromJson(reader, JsonObject.class);
     }
 
-    public int getExpCost() {
+    public int getLevelCost() {
         JsonElement element = jsonObject.get("experience_cost");
         return element.getAsInt();
     }

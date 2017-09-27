@@ -10,7 +10,7 @@ public class
 GeneraTileEntities {
 
     public static void init() {
-        GameRegistry.registerTileEntity(TileFaerieHome.class, "faerie_home");
+        GameRegistry.registerTileEntity(TileFaerieHome.class, "faerie_enclosure");
     }
 
 }
