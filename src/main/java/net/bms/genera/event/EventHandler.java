@@ -68,7 +68,7 @@ public class EventHandler {
         nbt.setString("author", new TextComponentTranslation("book.author.guide").getFormattedText());
         nbt.setInteger("generation", 2);
         NBTTagList nbtList = new NBTTagList();
-        for (int index = 0; index <= 7; index++)
+        for (int index = 0; index <= 16; index++)
             nbtList.appendTag(new NBTTagString(String.format("{\"text\": \"%s\"}", new TextComponentTranslation(String.format("book.pages.guide.%d", index)).getFormattedText())));
         nbt.setTag("pages", nbtList);
         guideBookStack.setTagCompound(nbt);
