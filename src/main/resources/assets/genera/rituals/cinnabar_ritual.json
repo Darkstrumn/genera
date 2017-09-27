@@ -2,7 +2,6 @@
   "faerie_type": 1,
   "faerie_level": 3,
   "experience_cost": 0,
-  "group": "Genera",
   "ingredient": ["minecraft:dye", 1],
   "result": ["genera:cinnabar", 2, 0]
 }

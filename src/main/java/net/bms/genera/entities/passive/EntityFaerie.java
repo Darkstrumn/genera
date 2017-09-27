@@ -156,7 +156,6 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     @Override
     public void readEntityFromNBT(NBTTagCompound comp) {
         super.readEntityFromNBT(comp);
-
         faerieInformation.setSize(comp.getFloat("size"));
         faerieInformation.setCurrentExp(comp.getInteger("current_exp"));
         faerieInformation.setType(comp.getInteger("type"));

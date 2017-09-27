@@ -1,0 +1,7 @@
+{
+  "faerie_type": 1,
+  "faerie_level": 7,
+  "experience_cost": 2,
+  "ingredient": ["minecraft:gold_ore", 0],
+  "result": ["minecraft:gold_nugget", 18, 0]
+}
