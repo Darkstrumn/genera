@@ -72,8 +72,11 @@ public class EventHandler {
             nbtList.appendTag(new NBTTagString(String.format("{\"text\": \"%s\"}", new TextComponentTranslation(String.format("book.pages.guide.%d", index)).getFormattedText())));
         nbt.setTag("pages", nbtList);
         guideBookStack.setTagCompound(nbt);
-        if (!event.player.inventory.hasItemStack(guideBookStack))
+        if (!event.player.getEntityData().getBoolean("genera.joined_before")) {
+            event.player.getEntityData().setBoolean("genera.joined_before", true);
+            event.player.getEntityData().setInteger("genera.sacrifices_made", 0);
             event.player.addItemStackToInventory(guideBookStack);
+        }
     }
 
     @SubscribeEvent

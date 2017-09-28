@@ -8,6 +8,7 @@ tile.nightshade.name=Nightshade
 tile.faerie_home.name=Faerie Enclosure
 tile.white_mushroom.name=White Mushroom
 tile.burdock.name=Burdock
+tile.altar.name=Altar to the Gods
 
 string.player.too_many_jars=You have too many jars in your hand. This enclosure only holds one.
 string.player.not_sneaking=You must be sneaking to extract items!

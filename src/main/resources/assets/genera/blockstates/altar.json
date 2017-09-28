@@ -1,0 +1,8 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "genera:machines/altar",
+    "transform": "forge:default-item"
+  },
+  "variants": {}
+}

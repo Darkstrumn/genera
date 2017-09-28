@@ -212,61 +212,91 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         if (player == null) return;
         switch (faerieInformation.getType()) {
             case 0: // Woodland
-                Potion healthBoost = Potion.getPotionById(21);
-                if (healthBoost == null) return;
-                if (!player.isPotionActive(healthBoost)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(healthBoost, ((int) faerieInformation.getMaxHealth()) * 300));
-                }
-                if (faerieInformation.getLevel() >= 3) {
-                    Potion health = Potion.getPotionById(6);
-                    if (health == null) return;
-                    if (!player.isPotionActive(health)) {
+                if (player.getEntityData().getInteger("genera.sacrifices_made") < 5) {
+                    Potion healthBoost = Potion.getPotionById(21);
+                    if (healthBoost == null) return;
+                    if (!player.isPotionActive(healthBoost)) {
                         faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                        player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
+                        player.addPotionEffect(new PotionEffect(healthBoost, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                    if (faerieInformation.getLevel() >= 3) {
+                        Potion health = Potion.getPotionById(6);
+                        if (health == null) return;
+                        if (!player.isPotionActive(health)) {
+                            faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                            player.addPotionEffect(new PotionEffect(health, ((int) faerieInformation.getMaxHealth()) * 300));
+                        }
+                    }
+                    if (faerieInformation.getLevel() >= 10) {
+                        boolean hasCinnabar = false;
+                        int slot = 0;
+                        for (; slot <= player.inventory.getSizeInventory(); slot++) {
+                            ItemStack stack = player.inventory.getStackInSlot(slot);
+                            if (stack.getItem() == GeneraItems.ItemCinnabar &&
+                                    stack.getCount() >= 2) {
+                                hasCinnabar = true;
+                            }
+                        }
+                        if (hasCinnabar) {
+                            if (player.getHealth() <= player.getMaxHealth() - 1.0) {
+                                player.setHealth(player.getMaxHealth());
+                                faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - 25);
+                                player.inventory.decrStackSize(slot, 2);
+                            }
+                        }
                     }
                 }
-                if (faerieInformation.getLevel() >= 5) {
-                    boolean hasCinnabar = false;
-                    int slot = 0;
-                    for (; slot <= player.inventory.getSizeInventory(); slot++) {
-                        ItemStack stack = player.inventory.getStackInSlot(slot);
-                        if (stack.getItem() == GeneraItems.ItemCinnabar &&
-                                stack.getCount() >= 2) {
-                            hasCinnabar = true;
-                        }
-                    }
-                    if (hasCinnabar) {
-                        if (player.getHealth() <= player.getMaxHealth() - 1.0) {
-                            player.setHealth(player.getMaxHealth());
-                            faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() - 25);
-                            player.inventory.decrStackSize(slot, 2);
-                        }
+                else {
+                    Potion poison = Potion.getPotionById(19);
+                    if (poison == null) return;
+                    if (!player.isPotionActive(poison)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(poison, ((int) faerieInformation.getMaxHealth()) * 300));
                     }
                 }
                 break;
             case 1: // Underground
-                Potion haste = Potion.getPotionById(3);
-                if (haste == null) return;
-                if (!player.isPotionActive(haste)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
-                }
-                if (faerieInformation.getLevel() >= 5) {
-                    Potion nightVision = Potion.getPotionById(16);
-                    if (nightVision == null) return;
-                    if (!player.isPotionActive(nightVision)) {
+                if (player.getEntityData().getInteger("genera.sacrifices_made") < 5) {
+                    Potion haste = Potion.getPotionById(3);
+                    if (haste == null) return;
+                    if (!player.isPotionActive(haste)) {
                         faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                        player.addPotionEffect(new PotionEffect(nightVision, ((int) faerieInformation.getMaxHealth()) * 300));
+                        player.addPotionEffect(new PotionEffect(haste, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                    if (faerieInformation.getLevel() >= 5) {
+                        Potion nightVision = Potion.getPotionById(16);
+                        if (nightVision == null) return;
+                        if (!player.isPotionActive(nightVision)) {
+                            faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                            player.addPotionEffect(new PotionEffect(nightVision, ((int) faerieInformation.getMaxHealth()) * 300));
+                        }
+                    }
+                }
+                else {
+                    Potion blindness = Potion.getPotionById(15);
+                    if (blindness == null) return;
+                    if (!player.isPotionActive(blindness)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(blindness, ((int) faerieInformation.getMaxHealth()) * 300));
                     }
                 }
                 break;
             case 2: // Mountainous
-                Potion jump_boost = Potion.getPotionById(8);
-                if (jump_boost == null) return;
-                if (!player.isPotionActive(jump_boost)) {
-                    faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
-                    player.addPotionEffect(new PotionEffect(jump_boost, ((int) faerieInformation.getMaxHealth()) * 300));
+                if (player.getEntityData().getInteger("genera.sacrifices_made") < 5) {
+                    Potion jump_boost = Potion.getPotionById(8);
+                    if (jump_boost == null) return;
+                    if (!player.isPotionActive(jump_boost)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(jump_boost, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
+                }
+                else {
+                    Potion wither = Potion.getPotionById(20);
+                    if (wither == null) return;
+                    if (!player.isPotionActive(wither)) {
+                        faerieInformation.setCurrentExp(faerieInformation.getCurrentExp() + 10);
+                        player.addPotionEffect(new PotionEffect(wither, ((int) faerieInformation.getMaxHealth()) * 300));
+                    }
                 }
                 break;
         }

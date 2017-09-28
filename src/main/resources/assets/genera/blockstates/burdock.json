@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "genera:burdock_full",
+    "model": "genera:plants/burdock_full",
     "transform": "forge:default-item"
   },
   "variants": {

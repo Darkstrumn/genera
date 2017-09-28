@@ -26,15 +26,16 @@ public class GeneraItems {
         ItemCinnabar = new ItemCinnabar();
         ItemBurdockSeeds = new ItemBurdockSeeds();
 
-        event.getRegistry().register(GeneraItems.ItemGlassJar);
-        event.getRegistry().register(GeneraItems.ItemSeedNightshade);
-        event.getRegistry().register(GeneraItems.ItemCinnabar);
-        event.getRegistry().register(GeneraItems.ItemBurdockSeeds);
+        event.getRegistry().register(ItemGlassJar);
+        event.getRegistry().register(ItemSeedNightshade);
+        event.getRegistry().register(ItemCinnabar);
+        event.getRegistry().register(ItemBurdockSeeds);
 
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockFaerieHome).setRegistryName("faerie_home"));
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockNightshadeCrop).setRegistryName("nightshade"));
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockWhiteMushroom).setRegistryName("white_mushroom"));
         event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockBurdockCrop).setRegistryName("burdock"));
+        event.getRegistry().register(new ItemBlock(GeneraBlocks.BlockAltar).setRegistryName("altar"));
     }
 
     @SideOnly(Side.CLIENT)
