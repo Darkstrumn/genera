@@ -3,7 +3,6 @@ package net.bms.genera.blocks;
 import net.bms.genera.init.GeneraItems;
 import net.bms.genera.te.TileFaerieHome;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -35,11 +34,11 @@ import java.util.Random;
 /**
  * Created by ben on 4/2/17.
  */
-public class BlockFaerieHome extends Block implements ITileEntityProvider{
+public class BlockFaerieHome extends Block {
     public static PropertyDirection FACING = PropertyDirection.create("facing");
 
     public BlockFaerieHome() {
-        super(Material.IRON);
+        super(Material.WOOD);
         setCreativeTab(CreativeTabs.DECORATIONS);
         setUnlocalizedName("faerie_home");
         setRegistryName("faerie_home");
@@ -104,7 +103,7 @@ public class BlockFaerieHome extends Block implements ITileEntityProvider{
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileFaerieHome();
     }
 

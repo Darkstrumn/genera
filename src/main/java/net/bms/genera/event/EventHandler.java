@@ -18,6 +18,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -105,6 +106,12 @@ public class EventHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @SubscribeEvent
+    public void playerSleep(PlayerSleepInBedEvent event) {
+        if (event.getEntityPlayer().getEntityData().getInteger("genera.sacrifices_made") > 0)
+            event.getEntityPlayer().getEntityData().setInteger("genera.sacrifices_made", 0);
     }
 
     @SubscribeEvent

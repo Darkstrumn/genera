@@ -4,5 +4,9 @@
     "model": "genera:machines/altar",
     "transform": "forge:default-item"
   },
-  "variants": {}
+  "variants": {
+    "normal": [{
+      "model": "genera:machines/altar"
+    }]
+  }
 }
