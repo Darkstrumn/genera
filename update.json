@@ -1,10 +1,10 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/genera",
   "1.12.2": {
-    "0.0.9": "Glass Jar tinting, fix more enclosure bugs, more sophisticated Faerie levelling, immortality."
+    "1.0.0": "Added some negative effects if you sacrifice faeries in the altar. Can be slept off. Release."
   },
   "promos": {
-    "1.12.2-latest": "0.0.9",
-    "1.12.2-recommended": "0.0.9"
+    "1.12.2-latest": "1.0.0",
+    "1.12.2-recommended": "1.0.0"
   }
 }
