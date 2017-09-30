@@ -31,13 +31,10 @@ import java.util.Random;
 
 import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
-// TODO: Faeries can escape jars in chests, but not jars in Faerie Enclosures; this may not be possible
-
 /**
  * Created by ben on 3/25/17.
  */
 public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawnData {
-
     @CapabilityInject(IFaerieInformation.class)
     private static Capability<IFaerieInformation> FAERIE_INFORMATION = null;
     public IFaerieInformation faerieInformation = FAERIE_INFORMATION.getDefaultInstance();

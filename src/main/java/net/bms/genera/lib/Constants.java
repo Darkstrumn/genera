@@ -5,6 +5,6 @@ package net.bms.genera.lib;
  */
 public class Constants {
     public static final String MODID = "genera";
-    public static final String VERSION = "0.0.9";
+    public static final String VERSION = "1.0.0";
     public static final String NAME = "Genera";
 }

@@ -15,7 +15,7 @@ minecraft {
     mappings = "snapshot_20170919"
 }
 
-version = "${minecraft.version}-0.0.9"
+version = "${minecraft.version}-1.0.0"
 group = "net.bms.genera"
 archivesBaseName = "Genera"
 
