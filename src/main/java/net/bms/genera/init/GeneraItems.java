@@ -46,5 +46,6 @@ public class GeneraItems {
         RenderUtil.register(ItemGlassJar, 1, "glass_jar_full");
         RenderUtil.register(ItemCinnabar, 0, "cinnabar");
         RenderUtil.register(ItemBurdockSeeds, 0, "burdock_seed");
+
     }
 }
