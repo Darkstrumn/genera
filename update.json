@@ -1,10 +1,11 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/genera",
   "1.12.2": {
-    "1.0.0": "Added some negative effects if you sacrifice faeries in the altar. Can be slept off. Release."
+    "1.0.0": "Added some negative effects if you sacrifice faeries in the altar. Can be slept off. Release.",
+    "1.0.1": "Added Subaraki's altar model."
   },
   "promos": {
-    "1.12.2-latest": "1.0.0",
-    "1.12.2-recommended": "1.0.0"
+    "1.12.2-latest": "1.0.1",
+    "1.12.2-recommended": "1.0.1"
   }
 }
