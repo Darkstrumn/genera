@@ -5,6 +5,7 @@
     "transform": "forge:default-item"
   },
   "variants": {
+    "inventory": [{}],
     "normal": [{
       "model": "genera:machines/altar"
     }]

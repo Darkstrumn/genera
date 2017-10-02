@@ -11,10 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAltar extends Block {
     public BlockAltar() {
@@ -23,6 +26,24 @@ public class BlockAltar extends Block {
         setRegistryName("altar");
         setHardness(0.4F);
         setCreativeTab(CreativeTabs.DECORATIONS);
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
