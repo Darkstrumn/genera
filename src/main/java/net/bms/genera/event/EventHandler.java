@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -93,16 +94,26 @@ public class EventHandler {
     @SubscribeEvent
     public void registerRituals(RegistryEvent.Register<RitualRecipe> event) {
         try {
-            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "cinnabar_ritual"))
-                    .setRegistryName("cinnabar_ritual"));
-            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "white_mushroom_ritual"))
-                    .setRegistryName("white_mushroom_ritual"));
-            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "burdock_seed_ritual"))
-                    .setRegistryName("burdock_seed_ritual"));
-            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "iron_nugget_ritual"))
-                    .setRegistryName("iron_nugget_ritual"));
-            event.getRegistry().register(new RitualRecipe(new ResourceLocation(Constants.MODID, "gold_nugget_ritual"))
-                    .setRegistryName("gold_nugget_ritual"));
+            File ritualDir = new File(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile());
+            if (ritualDir.isDirectory()) {
+                File[] ritualFiles = ritualDir.listFiles();
+                if (ritualFiles != null) {
+                    for (File ritualFile : ritualFiles) {
+                        event.getRegistry().register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
+                    }
+                }
+            }
+            ritualDir = new File("./genera/rituals");
+            if (!ritualDir.exists())
+                ritualDir.mkdirs();
+            if (ritualDir.isDirectory()) {
+                File[] ritualFiles = ritualDir.listFiles();
+                if (ritualFiles != null) {
+                    for (File ritualFile : ritualFiles) {
+                        event.getRegistry().register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

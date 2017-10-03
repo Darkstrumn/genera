@@ -4,20 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.bms.genera.lib.Constants;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class RitualRecipe extends IForgeRegistryEntry.Impl<RitualRecipe> {
     private JsonObject jsonObject;
 
-    public RitualRecipe(ResourceLocation resourceLocation) throws IOException {
-        FileReader reader = new FileReader(String.format("%s/%s",
-                this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getPath(),
-                String.format("%s.json", resourceLocation.getResourcePath())));
+    public RitualRecipe(File file) throws IOException {
+        FileReader reader = new FileReader(file);
         Gson jsonParser = new Gson();
         jsonObject = jsonParser.fromJson(reader, JsonObject.class);
     }
