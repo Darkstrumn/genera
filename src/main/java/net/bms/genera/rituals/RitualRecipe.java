@@ -4,6 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.File;
@@ -19,38 +25,42 @@ public class RitualRecipe extends IForgeRegistryEntry.Impl<RitualRecipe> {
         jsonObject = jsonParser.fromJson(reader, JsonObject.class);
     }
 
-    public int getLevelCost() {
-        JsonElement element = jsonObject.get("experience_cost");
-        return element.getAsInt();
-    }
-
-    public int getFaerieType() {
-        JsonElement element = jsonObject.get("faerie_type");
-        return element.getAsInt();
-    }
-
-    public int getFaerieLevel() {
-        JsonElement element = jsonObject.get("faerie_level");
-        return element.getAsInt();
-    }
-
-    public String[] getIngredient() {
-        JsonElement element = jsonObject.get("ingredient");
-        JsonArray array = element.getAsJsonArray();
-        String[] returnValue = new String[2];
-        for (int index = 0; index <= array.size() - 1; index++) {
-            returnValue[index] = array.get(index).getAsString();
+    public ItemStack getResult(NonNullList<ItemStack> itemStacks, int faerieLevel, int faerieType) {
+        ItemStack returnValue = ItemStack.EMPTY;
+        if (getInt("experience_cost") > getInt("faerie_level")) return returnValue;
+        if (faerieLevel >= getInt("faerie_level") && faerieType >= getInt("faerie_type")) {
+            JsonArray ingredientArray = jsonObject.getAsJsonArray("ingredients");
+            if (ingredientArray == null) return returnValue;
+            int ingredientsFound = 0;
+            for (int index = 0; index < ingredientArray.size(); index++) {
+                JsonElement ingredientElement = ingredientArray.get(index);
+                for (ItemStack stack : itemStacks) {
+                    if (stack.isEmpty()) continue;
+                    ResourceLocation reloc = stack.getItem().getRegistryName();
+                    if (reloc == null) continue;
+                    if (reloc.equals(new ResourceLocation (ingredientElement.getAsJsonArray().get(0).getAsString())) &&
+                            stack.getMetadata() == ingredientElement.getAsJsonArray().get(1).getAsInt()) {
+                        ingredientsFound += 1;
+                    }
+                }
+            }
+            if (ingredientsFound >= ingredientArray.size()) {
+                JsonArray resultArray = jsonObject.get("result").getAsJsonArray();
+                ResourceLocation reloc = new ResourceLocation(resultArray.get(0).getAsString());
+                int amount = resultArray.get(1).getAsInt();
+                int meta = resultArray.get(2).getAsInt();
+                IForgeRegistry<Item> registry = GameRegistry.findRegistry(Item.class);
+                if (registry == null) return returnValue;
+                Item item = registry.getValue(reloc);
+                if (item == null) return returnValue;
+                returnValue = new ItemStack(item, amount, meta);
+            }
         }
         return returnValue;
     }
 
-    public String[] getResult() {
-        JsonElement element = jsonObject.get("result");
-        JsonArray array = element.getAsJsonArray();
-        String[] returnValue = new String[3];
-        for (int index = 0; index <= array.size() - 1; index++) {
-            returnValue[index] = array.get(index).getAsString();
-        }
-        return returnValue;
+    public int getInt(String elementName) {
+        JsonElement element = jsonObject.get(elementName);
+        return element.getAsInt();
     }
 }

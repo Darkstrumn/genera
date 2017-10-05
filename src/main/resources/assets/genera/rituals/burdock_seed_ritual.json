@@ -2,6 +2,6 @@
   "faerie_type": 0,
   "faerie_level": 0,
   "experience_cost": 0,
-  "ingredient": ["genera:nightshade_seed", 0],
+  "ingredients": [["genera:nightshade_seed", 0]],
   "result": ["genera:burdock_seed", 2, 0]
 }

@@ -143,7 +143,7 @@ public class BlockFaerieHome extends Block {
                         handStack.getMetadata() == 1 &&
                         handStack.getCount() == 1) {
                     ItemStack stack = itemHandler.getStackInSlot(0);
-                    if (stack != ItemStack.EMPTY) {
+                    if (!stack.isEmpty()) {
                         TextComponentTranslation comp = new TextComponentTranslation("string.faerie_home.slot_taken");
                         comp.getStyle().setColor(TextFormatting.RED);
                         player.sendMessage(comp);
@@ -159,13 +159,13 @@ public class BlockFaerieHome extends Block {
                 }
                 else {
                     if (player.isSneaking()) {
-                        if (handStack == ItemStack.EMPTY) {
+                        if (handStack.isEmpty()) {
                             ItemStack stack = itemHandler.extractItem(0, 1, false);
-                            if (stack != ItemStack.EMPTY) {
+                            if (!stack.isEmpty()) {
                                 player.setHeldItem(hand, stack);
                             }
                         } else {
-                            if (itemHandler.getStackInSlot(0) == ItemStack.EMPTY) {
+                            if (itemHandler.getStackInSlot(0).isEmpty()) {
                                 TextComponentTranslation comp = new TextComponentTranslation("string.faerie_home.empty");
                                 comp.getStyle().setColor(TextFormatting.RED);
                                 player.sendMessage(comp);

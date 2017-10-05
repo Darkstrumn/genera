@@ -2,6 +2,6 @@
   "faerie_type": 1,
   "faerie_level": 5,
   "experience_cost": 1,
-  "ingredient": ["minecraft:iron_ore", 0],
+  "ingredients": [["minecraft:iron_ore", 0]],
   "result": ["minecraft:iron_nugget", 18, 0]
 }
