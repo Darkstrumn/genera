@@ -60,7 +60,7 @@ public class ItemGlassJar extends Item {
                     typeName = "Underground";
                     break;
                 case 2:
-                    typeName = "Mountainous";
+                    typeName = "Highlands";
                     break;
             }
             tooltip.add(String.format("Type: %s", typeName));
