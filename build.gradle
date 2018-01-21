@@ -10,12 +10,12 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 minecraft {
-    version = "1.12.2-14.23.0.2495"
+    version = "1.12.2-14.23.1.2600"
     runDir = "run"
-    mappings = "snapshot_20171002"
+    mappings = "snapshot_20180119"
 }
 
-version = "${minecraft.version}-1.0.3"
+version = "${minecraft.version}-1.0.4"
 group = "net.bms.genera"
 archivesBaseName = "Genera"
 

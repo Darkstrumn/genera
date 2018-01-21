@@ -3,7 +3,7 @@
 
 # Genera: Celtic Magic in Minecraft
 Genera is a Minecraft magic mod themed around the many facets of Celtic, and in particular, Welsh folklore.
-You can contact us on our **[Discord server](https://discord.gg/QCxf2kX)**
+You can contact me @bms_#6024 on the MMD Discord server.
 
 ## Code of Conduct
 Whether you wish to contribute or just report issues, please see our CODE_OF_CONDUCT.MD for a list of rules to follow.

@@ -192,4 +192,10 @@ public class BlockFaerieHome extends Block {
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING);
     }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
 }

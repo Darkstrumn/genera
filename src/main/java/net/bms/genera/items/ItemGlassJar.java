@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,20 +55,25 @@ public class ItemGlassJar extends Item {
             String typeName = null;
             switch (type) {
                 case 0:
-                    typeName = "Woodland";
+                    typeName = new TextComponentTranslation("item.glass_jar.description.type.woodland").getFormattedText();
                     break;
                 case 1:
-                    typeName = "Underground";
+                    typeName = new TextComponentTranslation("item.glass_jar.description.type.cave").getFormattedText();
                     break;
                 case 2:
-                    typeName = "Highlands";
+                    typeName = new TextComponentTranslation("item.glass_jar.description.type.highlands").getFormattedText();
                     break;
             }
-            tooltip.add(String.format("Type: %s", typeName));
-            tooltip.add(String.format("Size: %f", nbt.getFloat("size")));
-            tooltip.add(String.format("Maximum Health: %s", nbt.getDouble("max_health")));
-            tooltip.add(String.format("Level: %d", nbt.getInteger("level")));
-            tooltip.add(String.format("Experience Progress: %d", nbt.getInteger("current_exp")));
+            tooltip.add(String.format("%s: %s", new TextComponentTranslation("item.glass_jar.description.type.specifier").getFormattedText(),
+                    typeName));
+            tooltip.add(String.format("%s: %f", new TextComponentTranslation("item.glass_jar.description.size.specifier").getFormattedText(),
+                    nbt.getFloat("size")));
+            tooltip.add(String.format("%s: %s", new TextComponentTranslation("item.glass_jar.description.max_health.specifier").getFormattedText(),
+                    nbt.getDouble("max_health")));
+            tooltip.add(String.format("%s: %d", new TextComponentTranslation("item.glass_jar.description.level.specifier").getFormattedText(),
+                    nbt.getInteger("level")));
+            tooltip.add(String.format("%s: %d", new TextComponentTranslation("item.glass_jar.description.current_exp.specifier").getFormattedText(),
+                    nbt.getInteger("current_exp")));
         }
     }
 

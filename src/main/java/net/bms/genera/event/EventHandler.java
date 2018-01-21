@@ -7,14 +7,9 @@ import net.bms.genera.rituals.RitualRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -64,20 +59,9 @@ public class EventHandler {
 
     @SubscribeEvent
     public void playerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        ItemStack guideBookStack = new ItemStack(Items.WRITTEN_BOOK, 1);
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("title", new TextComponentTranslation("book.title.guide").getFormattedText());
-        nbt.setString("author", new TextComponentTranslation("book.author.guide").getFormattedText());
-        nbt.setInteger("generation", 2);
-        NBTTagList nbtList = new NBTTagList();
-        for (int index = 0; index <= 15; index++)
-            nbtList.appendTag(new NBTTagString(String.format("{\"text\": \"%s\"}", new TextComponentTranslation(String.format("book.pages.guide.%d", index)).getFormattedText())));
-        nbt.setTag("pages", nbtList);
-        guideBookStack.setTagCompound(nbt);
         if (!event.player.getEntityData().getBoolean("genera.joined_before")) {
             event.player.getEntityData().setBoolean("genera.joined_before", true);
             event.player.getEntityData().setInteger("genera.sacrifices_made", 0);
-            event.player.addItemStackToInventory(guideBookStack);
         }
     }
 
@@ -93,17 +77,13 @@ public class EventHandler {
 
     @SubscribeEvent
     public void registerRituals(RegistryEvent.Register<RitualRecipe> event) {
+        registerRitualsFromFile(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile(), event);
+        registerRitualsFromFile("./config/genera/rituals", event);
+    }
+
+    private void registerRitualsFromFile(String filename, RegistryEvent.Register<RitualRecipe> event) {
         try {
-            File ritualDir = new File(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile());
-            if (ritualDir.isDirectory()) {
-                File[] ritualFiles = ritualDir.listFiles();
-                if (ritualFiles != null) {
-                    for (File ritualFile : ritualFiles) {
-                        event.getRegistry().register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
-                    }
-                }
-            }
-            ritualDir = new File("./genera/rituals");
+            File ritualDir = new File(filename);
             if (!ritualDir.exists())
                 ritualDir.mkdirs();
             if (ritualDir.isDirectory()) {
@@ -122,7 +102,8 @@ public class EventHandler {
     @SubscribeEvent
     public void playerSleep(PlayerSleepInBedEvent event) {
         if (event.getEntityPlayer().getEntityData().getInteger("genera.sacrifices_made") > 0)
-            event.getEntityPlayer().getEntityData().setInteger("genera.sacrifices_made", 0);
+            event.getEntityPlayer().getEntityData().setInteger("genera.sacrifices_made",
+                    event.getEntityPlayer().getEntityData().getInteger("genera.sacrifices_made") - 1);
     }
 
     @SubscribeEvent
