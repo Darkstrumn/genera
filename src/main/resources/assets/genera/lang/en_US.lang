@@ -6,7 +6,7 @@ item.burdock_seed.name=Burdock Seeds
 
 item.glass_jar.description.type.woodland=Woodland
 item.glass_jar.description.type.cave=Underground
-item.glass_jar.description.type.highland=Highland
+item.glass_jar.description.type.highlands=Highland
 item.glass_jar.description.type.specifier=Domain
 item.glass_jar.description.size.specifier=Size
 item.glass_jar.description.max_health.specifier=Maximum Health

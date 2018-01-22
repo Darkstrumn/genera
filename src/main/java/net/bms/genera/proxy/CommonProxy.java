@@ -27,7 +27,7 @@ public class CommonProxy {
                 .setName(new ResourceLocation(Constants.MODID, "ritual_registry"));
         ritualRegistryBuilder.create();
 
-        CapabilityManager.INSTANCE.register(IFaerieInformation.class, new FaerieInformationStorage(), FaerieInformation.class);
+        CapabilityManager.INSTANCE.register(IFaerieInformation.class, new FaerieInformationStorage(), FaerieInformation::new);
         GeneraEntities.init();
         GeneraTileEntities.init();
         MinecraftForge.EVENT_BUS.register(new EventHandler());

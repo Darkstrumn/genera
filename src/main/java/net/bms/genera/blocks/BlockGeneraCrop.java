@@ -24,9 +24,9 @@ import java.util.Random;
  */
 public class BlockGeneraCrop extends BlockBush implements IGrowable {
 
-    public static final IProperty<Integer> AGE = PropertyInteger.create("age", 0, 2);
+    static final IProperty<Integer> AGE = PropertyInteger.create("age", 0, 2);
 
-    public BlockGeneraCrop() {
+    BlockGeneraCrop() {
         setTickRandomly(true);
         setCreativeTab(null);
         setHardness(0.0F);
@@ -34,7 +34,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
         setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
     }
 
-    public void grow(IBlockState state, World worldIn, BlockPos pos) {
+    private void grow(IBlockState state, World worldIn, BlockPos pos) {
         int growStage = state.getValue(AGE) + 1;
         if (growStage > 2)
             growStage = 2;
@@ -90,7 +90,7 @@ public class BlockGeneraCrop extends BlockBush implements IGrowable {
         }
     }
 
-    protected static float getGrowthChance(Block blockIn, World worldIn, BlockPos pos)
+    private static float getGrowthChance(Block blockIn, World worldIn, BlockPos pos)
     {
         float f = 1.0F;
         BlockPos blockpos1 = pos.down();
