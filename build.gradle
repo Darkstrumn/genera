@@ -1,7 +1,10 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name 'MCForge'
+            url 'http://files.minecraftforge.net/maven'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -22,6 +25,17 @@ archivesBaseName = "Genera"
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
+}
+
+repositories {
+    maven { // Baubles
+        name 'thiakil'
+        url 'http://maven.thiakil.com'
+    }
+}
+
+dependencies {
+    deobfCompile 'com.azanor.baubles:Baubles:1.12-1.5.2'
 }
 
 processResources {
