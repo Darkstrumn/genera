@@ -1,0 +1,7 @@
+{
+  "faerie_type": 1,
+  "faerie_level": 0,
+  "experience_cost": 0,
+  "ingredients": [["minecraft:gold_ingot", 0], ["genera:cinnabar", 0]],
+  "result": ["genera:ring_of_connla", 1, 0]
+}

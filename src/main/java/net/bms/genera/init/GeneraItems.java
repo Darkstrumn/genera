@@ -1,9 +1,6 @@
 package net.bms.genera.init;
 
-import net.bms.genera.items.ItemBurdockSeeds;
-import net.bms.genera.items.ItemCinnabar;
-import net.bms.genera.items.ItemGlassJarFull;
-import net.bms.genera.items.ItemSeedNightshade;
+import net.bms.genera.items.*;
 import net.bms.genera.util.RenderUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -19,18 +16,20 @@ public class GeneraItems {
     public static Item ItemGlassJarFull;
     public static Item ItemCinnabar;
     public static Item ItemBurdockSeeds;
+    public static Item ItemConnlaRing;
 
     public static void init(IForgeRegistry<Item> registry) {
         ItemSeedNightshade = new ItemSeedNightshade();
         ItemGlassJarFull = new ItemGlassJarFull();
         ItemCinnabar = new ItemCinnabar();
         ItemBurdockSeeds = new ItemBurdockSeeds();
-
+        ItemConnlaRing = new ItemConnlaRing();
 
         registry.register(ItemGlassJarFull);
         registry.register(ItemSeedNightshade);
         registry.register(ItemCinnabar);
         registry.register(ItemBurdockSeeds);
+        registry.register(ItemConnlaRing);
 
         registry.register(new ItemBlock(GeneraBlocks.BlockFaerieHome).setRegistryName("faerie_home"));
         registry.register(new ItemBlock(GeneraBlocks.BlockNightshadeCrop).setRegistryName("nightshade"));
@@ -45,5 +44,6 @@ public class GeneraItems {
         RenderUtil.register(ItemGlassJarFull, "glass_jar_full");
         RenderUtil.register(ItemCinnabar, "cinnabar");
         RenderUtil.register(ItemBurdockSeeds, "burdock_seed");
+        RenderUtil.register(ItemConnlaRing, "ring_of_connla");
     }
 }
