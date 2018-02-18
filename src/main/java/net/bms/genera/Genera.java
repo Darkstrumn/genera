@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 public class Genera
 {
     public static CreativeTabs TabGenera;
-    public boolean isBaublesPresent = false;
+    public static boolean isBaublesPresent = false;
 
     @SidedProxy(clientSide = "net.bms.genera.proxy.ClientProxy", serverSide = "net.bms.genera.proxy.ServerProxy")
     private static CommonProxy proxy;
