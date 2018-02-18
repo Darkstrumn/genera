@@ -1,6 +1,5 @@
 item.nightshade_seed.name=Nightshade Seeds
-item.glass_jar_empty.name=Empty Glass Jar
-item.glass_jar_full.name=Full Glass Jar
+item.glass_jar_full.name=Glass Bottle Carrying Faerie
 item.cinnabar.name=Cinnabar Shard
 item.burdock_seed.name=Burdock Seeds
 
@@ -13,6 +12,7 @@ item.glass_jar.description.max_health.specifier=Maximum Health
 item.glass_jar.description.level.specifier=Level
 item.glass_jar.description.current_exp.specifier=Current Experience
 
+itemGroup.genera=Genera
 
 tile.nightshade.name=Nightshade
 tile.faerie_home.name=Faerie Enclosure

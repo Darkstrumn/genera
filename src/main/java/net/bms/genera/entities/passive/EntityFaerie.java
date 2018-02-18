@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -25,8 +26,6 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import static net.bms.genera.init.GeneraItems.ItemGlassJar;
 
 /**
  * Created by ben on 3/25/17.
@@ -74,17 +73,18 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
             ItemStack stack = player.getHeldItem(hand);
-            if (stack.getItem() == ItemGlassJar && stack.getItemDamage() == 0) {
+            if (stack.getItem() == Items.GLASS_BOTTLE) {
                 this.setDead();
-                stack.setItemDamage(1);
-                NBTTagCompound nbt = stack.getTagCompound();
+                ItemStack newStack = new ItemStack(GeneraItems.ItemGlassJarFull);
+                newStack.setTagCompound(new NBTTagCompound());
+                NBTTagCompound nbt = newStack.getTagCompound();
                 if (nbt == null) return false;
                 nbt.setFloat("size", faerieInformation.getSize());
                 nbt.setInteger("type", faerieInformation.getType());
                 nbt.setDouble("max_health", faerieInformation.getMaxHealth());
                 nbt.setInteger("level", faerieInformation.getLevel());
                 nbt.setInteger("current_exp", faerieInformation.getCurrentExp());
-                player.setHeldItem(hand, stack);
+                player.setHeldItem(hand, newStack);
             }
         }
         return super.processInteract(player, hand);

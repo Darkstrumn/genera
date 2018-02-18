@@ -66,8 +66,7 @@ public class TileFaerieHome extends TileEntity implements ITickable {
             timeSinceLastGrowth++;
             if (timeSinceLastGrowth >= TIME_BETWEEN_GROWTH) {
                 ItemStack stack = cap.getStackInSlot(0);
-                if (stack.getItem() == GeneraItems.ItemGlassJar &&
-                        stack.getMetadata() == 1 &&
+                if (stack.getItem() == GeneraItems.ItemGlassJarFull &&
                         stack.getCount() == 1) {
                     NBTTagCompound nbt = stack.getTagCompound();
                     if (nbt != null) {

@@ -1,10 +1,10 @@
 package net.bms.genera.blocks;
 
+import net.bms.genera.Genera;
 import net.bms.genera.init.GeneraItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ public class BlockAltar extends Block {
         setUnlocalizedName("altar");
         setRegistryName("altar");
         setHardness(0.4F);
-        setCreativeTab(CreativeTabs.DECORATIONS);
+        setCreativeTab(Genera.TabGenera);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BlockAltar extends Block {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack handStack = player.getHeldItem(hand);
-        if (handStack.getItem() == GeneraItems.ItemGlassJar &&
+        if (handStack.getItem() == GeneraItems.ItemGlassJarFull &&
                 handStack.getMetadata() == 1) {
             NBTTagCompound nbt = handStack.getTagCompound();
             if (nbt == null) return false;

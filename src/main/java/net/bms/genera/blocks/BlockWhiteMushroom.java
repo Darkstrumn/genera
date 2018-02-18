@@ -1,9 +1,9 @@
 package net.bms.genera.blocks;
 
+import net.bms.genera.Genera;
 import net.bms.genera.entities.passive.EntityFaerie;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,7 +14,7 @@ public class BlockWhiteMushroom extends BlockBush {
     public BlockWhiteMushroom() {
         setUnlocalizedName("white_mushroom");
         setRegistryName("white_mushroom");
-        setCreativeTab(CreativeTabs.MISC);
+        setCreativeTab(Genera.TabGenera);
         setHardness(0.0F);
         setTickRandomly(true);
     }

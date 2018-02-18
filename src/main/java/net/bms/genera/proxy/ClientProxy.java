@@ -2,7 +2,6 @@ package net.bms.genera.proxy;
 
 import net.bms.genera.init.GeneraEntities;
 import net.bms.genera.init.GeneraItems;
-import net.bms.genera.items.ItemGlassJar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,16 +30,14 @@ public class ClientProxy extends CommonProxy {
     public void registerItemTints(){
         ItemColors ic = Minecraft.getMinecraft().getItemColors();
         ic.registerItemColorHandler((stack, tintIndex) -> {
-            if (stack.getItem() instanceof ItemGlassJar && stack.getMetadata() == 1) {
-                if (tintIndex == 1) {
-                    NBTTagCompound nbt = stack.getTagCompound();
-                    if (nbt == null) return 0xFFFFFF;
-                    if (nbt.getInteger("type") == 0) return 0xBF1316;
-                    else if (nbt.getInteger("type") == 1) return 0x7D90AD;
-                    else if (nbt.getInteger("type") == 2) return 0x62D47E;
-                }
+            if (tintIndex == 1) {
+                NBTTagCompound nbt = stack.getTagCompound();
+                if (nbt == null) return 0xFFFFFF;
+                if (nbt.getInteger("type") == 0) return 0xBF1316;
+                else if (nbt.getInteger("type") == 1) return 0x7D90AD;
+                else if (nbt.getInteger("type") == 2) return 0x62D47E;
             }
             return 0xFFFFFF;
-        }, GeneraItems.ItemGlassJar);
+        }, GeneraItems.ItemGlassJarFull);
     }
 }

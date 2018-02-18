@@ -1,8 +1,8 @@
 package net.bms.genera.entities.render;
 
 import net.bms.genera.entities.passive.EntityFaerie;
-import net.bms.genera.lib.Constants;
-import net.bms.genera.lib.ModelHandle;
+import net.bms.genera.util.Constants;
+import net.bms.genera.util.ModelHandle;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -12,11 +12,11 @@ import static net.minecraft.client.renderer.GlStateManager.*;
 
 public class RenderFaerie extends Render<EntityFaerie> implements IRenderFactory<EntityFaerie> {
 
-    private ModelHandle body = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/body"));;
-    private ModelHandle wing_r_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_right"));;
-    private ModelHandle wing_r_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_right"));;
-    private ModelHandle wing_l_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_left"));;
-    private ModelHandle wing_l_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_left"));;
+    private ModelHandle body = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/body"));
+    private ModelHandle wing_r_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_right"));
+    private ModelHandle wing_r_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_right"));
+    private ModelHandle wing_l_top = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_left"));
+    private ModelHandle wing_l_bot = ModelHandle.of(new ResourceLocation(Constants.MODID, "entity/faerie/wing_left"));
 
     public RenderFaerie(RenderManager renderManager) {
         super(renderManager);

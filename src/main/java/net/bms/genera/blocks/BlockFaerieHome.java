@@ -1,5 +1,6 @@
 package net.bms.genera.blocks;
 
+import net.bms.genera.Genera;
 import net.bms.genera.init.GeneraItems;
 import net.bms.genera.te.TileFaerieHome;
 import net.minecraft.block.Block;
@@ -7,7 +8,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +39,7 @@ public class BlockFaerieHome extends Block {
 
     public BlockFaerieHome() {
         super(Material.WOOD);
-        setCreativeTab(CreativeTabs.DECORATIONS);
+        setCreativeTab(Genera.TabGenera);
         setUnlocalizedName("faerie_home");
         setRegistryName("faerie_home");
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -139,8 +139,7 @@ public class BlockFaerieHome extends Block {
             IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             if (itemHandler != null) {
                 ItemStack handStack = player.getHeldItem(hand);
-                if (handStack.getItem() == GeneraItems.ItemGlassJar &&
-                        handStack.getMetadata() == 1 &&
+                if (handStack.getItem() == GeneraItems.ItemGlassJarFull &&
                         handStack.getCount() == 1) {
                     ItemStack stack = itemHandler.getStackInSlot(0);
                     if (!stack.isEmpty()) {

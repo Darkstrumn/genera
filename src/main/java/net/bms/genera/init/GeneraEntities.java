@@ -3,7 +3,7 @@ package net.bms.genera.init;
 import net.bms.genera.Genera;
 import net.bms.genera.entities.passive.EntityFaerie;
 import net.bms.genera.entities.render.RenderFaerie;
-import net.bms.genera.lib.Constants;
+import net.bms.genera.util.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;

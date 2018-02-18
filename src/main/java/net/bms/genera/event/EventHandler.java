@@ -2,8 +2,8 @@ package net.bms.genera.event;
 
 import net.bms.genera.init.GeneraBlocks;
 import net.bms.genera.init.GeneraItems;
-import net.bms.genera.lib.Constants;
 import net.bms.genera.rituals.RitualRecipe;
+import net.bms.genera.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -16,10 +16,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,38 +67,20 @@ public class EventHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void registerItems(RegistryEvent.Register<Item> event) {
-        GeneraItems.init(event);
+        GeneraItems.init(event.getRegistry());
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void registerBlocks(RegistryEvent.Register<Block> event) {
-        GeneraBlocks.init(event);
+        GeneraBlocks.init(event.getRegistry());
     }
 
     @SubscribeEvent
     public void registerRituals(RegistryEvent.Register<RitualRecipe> event) {
-        registerRitualsFromFile(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile(), event);
-        registerRitualsFromFile("./config/genera/rituals", event);
-    }
-
-    private void registerRitualsFromFile(String filename, RegistryEvent.Register<RitualRecipe> event) {
-        try {
-            File ritualDir = new File(filename);
-            if (!ritualDir.exists())
-                ritualDir.mkdirs();
-            if (ritualDir.isDirectory()) {
-                File[] ritualFiles = ritualDir.listFiles();
-                if (ritualFiles != null) {
-                    for (File ritualFile : ritualFiles) {
-                        event.getRegistry().register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        registerRitualsFromFile(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile(), event.getRegistry());
+        registerRitualsFromFile("./config/genera/rituals", event.getRegistry());
     }
 
     @SubscribeEvent
@@ -110,5 +94,23 @@ public class EventHandler {
     public void registerModels(ModelRegistryEvent event) {
         GeneraItems.initModels();
         GeneraBlocks.initModels();
+    }
+
+    private void registerRitualsFromFile(String filename, IForgeRegistry<RitualRecipe> registry) {
+        try {
+            File ritualDir = new File(filename);
+            if (!ritualDir.exists())
+                ritualDir.mkdirs();
+            if (ritualDir.isDirectory()) {
+                File[] ritualFiles = ritualDir.listFiles();
+                if (ritualFiles != null) {
+                    for (File ritualFile : ritualFiles) {
+                        registry.register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

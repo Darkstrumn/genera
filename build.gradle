@@ -10,9 +10,9 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 minecraft {
-    version = "1.12.2-14.23.1.2600"
+    version = "1.12.2-14.23.2.2618"
     runDir = "run"
-    mappings = "snapshot_20180119"
+    mappings = "snapshot_20180216"
 }
 
 version = "${minecraft.version}-1.0.4"

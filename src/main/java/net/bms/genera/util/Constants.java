@@ -1,4 +1,4 @@
-package net.bms.genera.lib;
+package net.bms.genera.util;
 
 /**
  * Created by ben on 3/18/17.

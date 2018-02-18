@@ -3,7 +3,7 @@
   "group": "Genera",
   "pattern": [
     "GGG",
-    "JJJ",
+    "BBB",
     "PPP"
   ],
   "key": {
@@ -17,8 +17,8 @@
       "data": 32767,
       "count": 1
     },
-    "J": {
-      "item": "genera:glass_jar",
+    "B": {
+      "item": "minecraft:glass_bottle",
       "data": 0,
       "count": 1
     }

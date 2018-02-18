@@ -1,8 +1,8 @@
 package net.bms.genera.items;
 
+import net.bms.genera.Genera;
 import net.bms.genera.init.GeneraBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -20,7 +20,7 @@ public class ItemBurdockSeeds extends Item implements IPlantable {
     public ItemBurdockSeeds() {
         setRegistryName("burdock_seed");
         setUnlocalizedName("burdock_seed");
-        setCreativeTab(CreativeTabs.MISC);
+        setCreativeTab(Genera.TabGenera);
     }
 
     @Override

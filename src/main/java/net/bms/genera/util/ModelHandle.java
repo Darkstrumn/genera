@@ -1,4 +1,4 @@
-package net.bms.genera.lib;
+package net.bms.genera.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
