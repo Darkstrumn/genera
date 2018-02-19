@@ -50,8 +50,7 @@ public class BlockAltar extends Block {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack handStack = player.getHeldItem(hand);
-        if (handStack.getItem() == GeneraItems.ItemGlassJarFull &&
-                handStack.getMetadata() == 1) {
+        if (handStack.getItem() == GeneraItems.ItemGlassJarFull) {
             NBTTagCompound nbt = handStack.getTagCompound();
             if (nbt == null) return false;
             PotionType potion;
@@ -61,17 +60,17 @@ public class BlockAltar extends Block {
                     potion = PotionType.getPotionTypeForName("regeneration");
                     if (potion == null) return false;
                     player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potion));
-                    return false;
+                    return true;
                 case 1:
                     potion = PotionType.getPotionTypeForName("night_vision");
                     if (potion == null) return false;
                     player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potion));
-                    return false;
+                    return true;
                 case 2:
                     potion = PotionType.getPotionTypeForName("leaping");
                     if (potion == null) return false;
                     player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potion));
-                    return false;
+                    return true;
             }
         }
         return false;
