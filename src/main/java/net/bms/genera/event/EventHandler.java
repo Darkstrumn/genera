@@ -1,5 +1,6 @@
 package net.bms.genera.event;
 
+import net.bms.genera.Genera;
 import net.bms.genera.init.GeneraBlocks;
 import net.bms.genera.init.GeneraItems;
 import net.bms.genera.rituals.RitualRecipe;
@@ -105,6 +106,7 @@ public class EventHandler {
                 File[] ritualFiles = ritualDir.listFiles();
                 if (ritualFiles != null) {
                     for (File ritualFile : ritualFiles) {
+                        if(!Genera.isBaublesPresent && ritualFile.getName().equals("ring_of_connla_ritual.json")) continue;
                         registry.register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
                     }
                 }

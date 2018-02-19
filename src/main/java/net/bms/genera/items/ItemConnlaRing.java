@@ -9,7 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.fml.common.Optional;
 
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 public class ItemConnlaRing extends Item implements IBauble {
     public ItemConnlaRing() {
         setCreativeTab(Genera.TabGenera);

@@ -36,7 +36,7 @@ public class Genera
         logger = event.getModLog();
         TabGenera = new GeneraTab();
         proxy.preInit(event);
-        if (Loader.isModLoaded("baubles")) isBaublesPresent = true;
+        isBaublesPresent = Loader.isModLoaded("baubles");
     }
 
     @Mod.EventHandler
