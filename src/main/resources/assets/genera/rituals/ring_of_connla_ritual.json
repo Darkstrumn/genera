@@ -1,5 +1,5 @@
 {
-  "faerie_type": 1,
+  "faerie_type": "underground",
   "faerie_level": 0,
   "experience_cost": 0,
   "ingredients": [["minecraft:gold_ingot", 0], ["genera:cinnabar", 0]],

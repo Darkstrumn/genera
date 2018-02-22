@@ -1,0 +1,10 @@
+{
+  "faerie_type": "highland",
+  "faerie_type_local": "Highland",
+  "default_health": 3.0,
+  "default_level": 1,
+  "default_size": 0.1,
+  "body_texture": "mountain/body",
+  "wing_top_texture": "mountain/wing_top",
+  "wing_bottom_texture": "mountain/wing_bottom"
+}

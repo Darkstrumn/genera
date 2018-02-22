@@ -1,5 +1,5 @@
 {
-  "faerie_type": 1,
+  "faerie_type": "underground",
   "faerie_level": 3,
   "experience_cost": 0,
   "ingredients": [["minecraft:dye", 1], ["minecraft:stone", 0]],

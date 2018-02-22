@@ -1,5 +1,5 @@
 {
-  "faerie_type": 1,
+  "faerie_type": "underground",
   "faerie_level": 7,
   "experience_cost": 2,
   "ingredients": [["minecraft:gold_ore", 0]],

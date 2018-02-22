@@ -1,5 +1,5 @@
 {
-  "faerie_type": 1,
+  "faerie_type": "woodland",
   "faerie_level": 5,
   "experience_cost": 1,
   "ingredients": [["minecraft:iron_ore", 0]],

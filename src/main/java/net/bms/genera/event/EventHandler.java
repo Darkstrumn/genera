@@ -1,9 +1,10 @@
 package net.bms.genera.event;
 
 import net.bms.genera.Genera;
+import net.bms.genera.custom.Faerie;
+import net.bms.genera.custom.Ritual;
 import net.bms.genera.init.GeneraBlocks;
 import net.bms.genera.init.GeneraItems;
-import net.bms.genera.rituals.RitualRecipe;
 import net.bms.genera.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -79,9 +80,10 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public void registerRituals(RegistryEvent.Register<RitualRecipe> event) {
-        registerRitualsFromFile(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile(), event.getRegistry());
-        registerRitualsFromFile("./config/genera/rituals", event.getRegistry());
+    public void registerRituals(RegistryEvent.Register<Ritual> event) {
+        registerFromFile(this.getClass().getResource(String.format("/assets/%s/rituals", Constants.MODID)).getFile(),
+                event.getRegistry());
+        registerFromFile(String.format("./config/%s/rituals", Constants.MODID), event.getRegistry());
     }
 
     @SubscribeEvent
@@ -97,17 +99,30 @@ public class EventHandler {
         GeneraBlocks.initModels();
     }
 
-    private void registerRitualsFromFile(String filename, IForgeRegistry<RitualRecipe> registry) {
+    @SubscribeEvent
+    public void registerFaeries(RegistryEvent.Register<Faerie> event) {
+        registerFromFile(this.getClass().getResource(String.format("/assets/%s/faerie", Constants.MODID)).getFile(),
+                event.getRegistry());
+        registerFromFile(String.format("./config/%s/faerie", Constants.MODID), event.getRegistry());
+    }
+
+    private void registerFromFile(String filename, IForgeRegistry registry) {
         try {
-            File ritualDir = new File(filename);
-            if (!ritualDir.exists())
-                ritualDir.mkdirs();
-            if (ritualDir.isDirectory()) {
-                File[] ritualFiles = ritualDir.listFiles();
-                if (ritualFiles != null) {
-                    for (File ritualFile : ritualFiles) {
-                        if(!Genera.isBaublesPresent && ritualFile.getName().equals("ring_of_connla_ritual.json")) continue;
-                        registry.register(new RitualRecipe(ritualFile).setRegistryName(ritualFile.getName().substring(0, ritualFile.getName().length() - 5)));
+            File dir = new File(filename);
+            if (!dir.exists())
+                dir.mkdirs();
+            if (dir.isDirectory()) {
+                File[] files = dir.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (registry.getRegistrySuperType() == Ritual.class) {
+                            if (!Genera.isBaublesPresent && file.getName().equals("ring_of_connla_ritual.json"))
+                                continue;
+                            registry.register(new Ritual(file).setRegistryName(file.getName().substring(0, file.getName().length() - 5)));
+                        }
+                        else if (registry.getRegistrySuperType() == Faerie.class) {
+                            registry.register(new Faerie(file).setRegistryName(file.getName().substring(0, file.getName().length() - 5)));
+                        }
                     }
                 }
             }

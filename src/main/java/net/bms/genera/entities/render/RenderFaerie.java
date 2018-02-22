@@ -1,5 +1,6 @@
 package net.bms.genera.entities.render;
 
+import net.bms.genera.custom.Faerie;
 import net.bms.genera.entities.passive.EntityFaerie;
 import net.bms.genera.util.Constants;
 import net.bms.genera.util.ModelHandle;
@@ -7,6 +8,8 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.minecraft.client.renderer.GlStateManager.*;
 
@@ -34,22 +37,19 @@ public class RenderFaerie extends Render<EntityFaerie> implements IRenderFactory
         String wing_bottom = String.format("%s:entity/faerie/wood/wing_bottom", Constants.MODID);
         String body_texture = String.format("%s:entity/faerie/wood/body", Constants.MODID);
 
-        switch (entity.faerieInformation.getType()) {
-            case 0:
-                wing_top = String.format("%s:entity/faerie/wood/wing_top", Constants.MODID);
-                wing_bottom = String.format("%s:entity/faerie/wood/wing_bottom", Constants.MODID);
-                body_texture = String.format("%s:entity/faerie/wood/body", Constants.MODID);
-                break;
-            case 1:
-                wing_top = String.format("%s:entity/faerie/cave/wing_top", Constants.MODID);
-                wing_bottom = String.format("%s:entity/faerie/cave/wing_bottom", Constants.MODID);
-                body_texture = String.format("%s:entity/faerie/cave/body", Constants.MODID);
-                break;
-            case 2:
-                wing_top = String.format("%s:entity/faerie/mountain/wing_top", Constants.MODID);
-                wing_bottom = String.format("%s:entity/faerie/mountain/wing_bottom", Constants.MODID);
-                body_texture = String.format("%s:entity/faerie/mountain/body", Constants.MODID);
-                break;
+        IForgeRegistry<Faerie> registry = GameRegistry.findRegistry(Faerie.class);
+        if (registry != null) {
+            String texturePathParent = "";
+            if (entity.faerieInformation.getType().equals("woodland") ||
+                    entity.faerieInformation.getType().equals("underground") ||
+                    entity.faerieInformation.getType().equals("highland"))
+                texturePathParent = String.format("%s:entity/faerie/", Constants.MODID);
+            Faerie entry = registry.getValue(new ResourceLocation(Constants.MODID, entity.faerieInformation.getType()));
+            if (entry != null) {
+                wing_top = texturePathParent + entry.getWingTopTexture();
+                wing_bottom = texturePathParent + entry.getWingBottomTexture();
+                body_texture = texturePathParent + entry.getBodyTexture();
+            }
         }
 
         if (!wing_r_top.getTextureReplacements().containsKey("0") || wing_r_top.getTextureReplacements().containsKey("0") && !wing_r_top.getTextureReplacements().get("0").equals(wing_top))

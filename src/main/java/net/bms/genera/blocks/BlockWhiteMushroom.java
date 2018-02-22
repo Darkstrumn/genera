@@ -1,11 +1,15 @@
 package net.bms.genera.blocks;
 
 import net.bms.genera.Genera;
-import net.bms.genera.entities.passive.EntityFaerie;
+import net.bms.genera.custom.Faerie;
+import net.bms.genera.util.Constants;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Random;
 
@@ -22,12 +26,11 @@ public class BlockWhiteMushroom extends BlockBush {
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         super.updateTick(worldIn, pos, state, rand);
-        if (!worldIn.isRemote) {
-            if (pos.getY() <= 32) {
-                EntityFaerie faerie = new EntityFaerie(worldIn, 5.0D, 1, 0.3F, 0);
-                faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
-                worldIn.spawnEntity(faerie);
-            }
+        IForgeRegistry<Faerie> registry = GameRegistry.findRegistry(Faerie.class);
+        if (registry != null) {
+            Faerie faerie = registry.getValue(new ResourceLocation(Constants.MODID, "underground"));
+            if (faerie != null)
+                faerie.spawn(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
         }
     }
 

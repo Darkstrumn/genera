@@ -16,7 +16,7 @@ public class FaerieInformationStorage implements Capability.IStorage<IFaerieInfo
     @Override
     public NBTBase writeNBT(Capability<IFaerieInformation> capability, IFaerieInformation instance, EnumFacing side) {
         NBTTagCompound comp = new NBTTagCompound();
-        comp.setInteger("type", instance.getType());
+        comp.setString("type", instance.getType());
         comp.setFloat("size", instance.getSize());
         comp.setDouble("max_health", instance.getMaxHealth());
         comp.setInteger("level", instance.getLevel());
@@ -27,7 +27,7 @@ public class FaerieInformationStorage implements Capability.IStorage<IFaerieInfo
 
     @Override
     public void readNBT(Capability<IFaerieInformation> capability, IFaerieInformation instance, EnumFacing side, NBTBase nbt) {
-        instance.setType(((NBTTagCompound) nbt).getInteger("type"));
+        instance.setType(((NBTTagCompound) nbt).getString("type"));
         instance.setSize(((NBTTagCompound) nbt).getFloat("size"));
         instance.setMaxHealth(((NBTTagCompound) nbt).getDouble("max_health"));
         instance.setLevel(((NBTTagCompound) nbt).getInteger("level"));

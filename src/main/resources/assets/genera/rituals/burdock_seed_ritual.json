@@ -1,5 +1,5 @@
 {
-  "faerie_type": 0,
+  "faerie_type": "woodland",
   "faerie_level": 0,
   "experience_cost": 0,
   "ingredients": [["genera:nightshade_seed", 0]],

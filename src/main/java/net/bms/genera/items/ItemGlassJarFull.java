@@ -2,8 +2,10 @@ package net.bms.genera.items;
 
 import net.bms.genera.Genera;
 import net.bms.genera.capability.FaerieInformationProvider;
+import net.bms.genera.custom.Faerie;
 import net.bms.genera.entities.passive.EntityFaerie;
 import net.bms.genera.te.TileFaerieHome;
+import net.bms.genera.util.Constants;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -15,10 +17,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,16 +41,24 @@ public class ItemGlassJarFull extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt == null) return;
-        int type = nbt.getInteger("type");
+        String type = nbt.getString("type");
         String typeName = null;
+
+        IForgeRegistry<Faerie> registry = GameRegistry.findRegistry(Faerie.class);
+        if (registry != null) {
+            Faerie faerie = registry.getValue(new ResourceLocation(Constants.MODID, "woodland"));
+            if (faerie != null)
+                typeName = faerie.getName();
+        }
+
         switch (type) {
-            case 0:
+            case "woodland":
                 typeName = I18n.format("item.glass_jar.description.type.woodland");
                 break;
-            case 1:
+            case "underground":
                 typeName = I18n.format("item.glass_jar.description.type.cave");
                 break;
-            case 2:
+            case "highland":
                 typeName = I18n.format("item.glass_jar.description.type.highlands");
                 break;
         }
@@ -82,7 +95,7 @@ public class ItemGlassJarFull extends Item {
             if (!(worldIn.getTileEntity(pos) instanceof TileFaerieHome)) {
                 NBTTagCompound nbt = stack.getTagCompound();
                 if (nbt == null) return EnumActionResult.FAIL;
-                EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getInteger("type"), nbt.getFloat("size"), nbt.getInteger("level"), nbt.getInteger("current_exp"));
+                EntityFaerie faerie = new EntityFaerie(worldIn, nbt.getDouble("max_health"), nbt.getString("type"), nbt.getFloat("size"), nbt.getInteger("level"), nbt.getInteger("current_exp"));
                 faerie.setPosition((double) pos.getX(), (double) pos.up().getY(), (double) pos.getZ());
                 worldIn.spawnEntity(faerie);
                 player.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));

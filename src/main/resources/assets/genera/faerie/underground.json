@@ -1,0 +1,10 @@
+{
+  "faerie_type": "underground",
+  "faerie_type_local": "Underground",
+  "default_health": 5.0,
+  "default_level": 1,
+  "default_size": 0.2,
+  "body_texture": "cave/body",
+  "wing_top_texture": "cave/wing_top",
+  "wing_bottom_texture": "cave/wing_bottom"
+}

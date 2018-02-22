@@ -1,5 +1,5 @@
 {
-  "faerie_type": 2,
+  "faerie_type": "highland",
   "faerie_level": 1,
   "experience_cost": 1,
   "ingredients": [["minecraft:brown_mushroom", 0], ["genera:burdock_seed", 0]],

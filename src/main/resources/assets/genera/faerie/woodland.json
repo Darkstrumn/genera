@@ -1,0 +1,10 @@
+{
+  "faerie_type": "woodland",
+  "faerie_type_local": "Woodland",
+  "default_health": 4.0,
+  "default_level": 1,
+  "default_size": 0.1,
+  "body_texture": "wood/body",
+  "wing_top_texture": "wood/wing_top",
+  "wing_bottom_texture": "wood/wing_bottom"
+}

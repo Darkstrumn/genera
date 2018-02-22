@@ -55,18 +55,18 @@ public class BlockAltar extends Block {
             if (nbt == null) return false;
             PotionType potion;
             player.getEntityData().setInteger("genera.sacrifices_made", player.getEntityData().getInteger("genera.sacrifices_made") + 1);
-            switch (nbt.getInteger("type")) {
-                case 0:
+            switch (nbt.getString("type")) {
+                case "woodland":
                     potion = PotionType.getPotionTypeForName("regeneration");
                     if (potion == null) return false;
                     player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potion));
                     return true;
-                case 1:
+                case "underground":
                     potion = PotionType.getPotionTypeForName("night_vision");
                     if (potion == null) return false;
                     player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potion));
                     return true;
-                case 2:
+                case "highland":
                     potion = PotionType.getPotionTypeForName("leaping");
                     if (potion == null) return false;
                     player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potion));

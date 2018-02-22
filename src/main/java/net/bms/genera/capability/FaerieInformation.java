@@ -8,19 +8,19 @@ import net.minecraft.nbt.NBTTagCompound;
  * Created by benjaminsutter on 7/3/17.
  */
 public class FaerieInformation implements IFaerieInformation {
-    private int type;
+    private String type = "woodland";
     private float size;
     private double maxHealth;
     private int level;
     private int current_exp;
 
     @Override
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
     @Override
-    public int getType() {
+    public String getType() {
         return this.type;
     }
 

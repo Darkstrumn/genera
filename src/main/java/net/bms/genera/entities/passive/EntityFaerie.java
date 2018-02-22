@@ -2,8 +2,8 @@ package net.bms.genera.entities.passive;
 
 import io.netty.buffer.ByteBuf;
 import net.bms.genera.capability.interfaces.IFaerieInformation;
+import net.bms.genera.custom.Ritual;
 import net.bms.genera.init.GeneraItems;
-import net.bms.genera.rituals.RitualRecipe;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -23,6 +23,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -37,14 +38,14 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     private static final int EXP_TO_LEVEL_UP = 50;
 
     public EntityFaerie(World worldIn) {
-        this(worldIn, 2.0D, 0, 0.1F, 1);
+        this(worldIn, 2.0D, "woodland", 0.1F, 1);
     }
 
-    public EntityFaerie(World worldIn, double maxHealth, int type, float size, int level) {
+    public EntityFaerie(World worldIn, double maxHealth, String type, float size, int level) {
         this(worldIn, maxHealth, type, size, level, 0);
     }
 
-    public EntityFaerie(World worldIn, double maxHealth, int type, float size, int level, int current_exp) {
+    public EntityFaerie(World worldIn, double maxHealth, String type, float size, int level, int current_exp) {
         super(worldIn);
         faerieInformation.setMaxHealth(maxHealth);
         faerieInformation.setType(type);
@@ -80,7 +81,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                 NBTTagCompound nbt = newStack.getTagCompound();
                 if (nbt == null) return false;
                 nbt.setFloat("size", faerieInformation.getSize());
-                nbt.setInteger("type", faerieInformation.getType());
+                nbt.setString("type", faerieInformation.getType());
                 nbt.setDouble("max_health", faerieInformation.getMaxHealth());
                 nbt.setInteger("level", faerieInformation.getLevel());
                 nbt.setInteger("current_exp", faerieInformation.getCurrentExp());
@@ -121,7 +122,8 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     public void writeSpawnData(ByteBuf buffer) {
         buffer.writeDouble(faerieInformation.getMaxHealth());
         buffer.writeFloat(faerieInformation.getSize());
-        buffer.writeInt(faerieInformation.getType());
+        buffer.writeInt(faerieInformation.getType().length());
+        buffer.writeCharSequence(faerieInformation.getType(), Charset.defaultCharset());
         buffer.writeInt(faerieInformation.getLevel());
         buffer.writeInt(faerieInformation.getCurrentExp());
     }
@@ -131,7 +133,8 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
     public void readSpawnData(ByteBuf additionalData) {
         faerieInformation.setMaxHealth(additionalData.readDouble());
         faerieInformation.setSize(additionalData.readFloat());
-        faerieInformation.setType(additionalData.readInt());
+        int typeSize = additionalData.readInt();
+        faerieInformation.setType(additionalData.readCharSequence(typeSize, Charset.defaultCharset()).toString());
         faerieInformation.setLevel(additionalData.readInt());
         faerieInformation.setCurrentExp(additionalData.readInt());
     }
@@ -142,7 +145,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
 
         comp.setFloat("size", faerieInformation.getSize());
         comp.setInteger("current_exp", faerieInformation.getCurrentExp());
-        comp.setInteger("type", faerieInformation.getType());
+        comp.setString("type", faerieInformation.getType());
         comp.setInteger("level", faerieInformation.getLevel());
         comp.setDouble("max_health", faerieInformation.getMaxHealth());
     }
@@ -152,7 +155,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         super.readEntityFromNBT(comp);
         faerieInformation.setSize(comp.getFloat("size"));
         faerieInformation.setCurrentExp(comp.getInteger("current_exp"));
-        faerieInformation.setType(comp.getInteger("type"));
+        faerieInformation.setType(comp.getString("type"));
         faerieInformation.setLevel(comp.getInteger("level"));
         faerieInformation.setMaxHealth(comp.getDouble("max_health"));
     }
@@ -164,13 +167,13 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
             int experienceCost = 0;
             int index = 0;
             ItemStack stack = ItemStack.EMPTY;
-            Iterator<RitualRecipe> iterator = GameRegistry.findRegistry(RitualRecipe.class).iterator();
+            Iterator<Ritual> iterator = GameRegistry.findRegistry(Ritual.class).iterator();
             for (EntityItem item : items) {
                 itemStacks.add(index, item.getItem());
             }
             while (iterator.hasNext()) {
                 if (!stack.isEmpty()) break;
-                RitualRecipe ritual = iterator.next();
+                Ritual ritual = iterator.next();
                 stack = ritual.getResult(itemStacks, faerieInformation.getLevel(), faerieInformation.getType());
                 experienceCost = ritual.getInt("experience_cost");
             }
@@ -191,7 +194,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
         EntityPlayer player = this.world.getNearestAttackablePlayer(this, 10, 10);
         if (player == null) return;
         switch (faerieInformation.getType()) {
-            case 0: // Woodland
+            case "woodland": // Woodland
                 if (player.getEntityData().getInteger("genera.sacrifices_made") < 5) {
                     Potion healthBoost = Potion.getPotionById(21);
                     if (healthBoost == null) return;
@@ -235,7 +238,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                     }
                 }
                 break;
-            case 1: // Underground
+            case "underground": // Underground
                 if (player.getEntityData().getInteger("genera.sacrifices_made") < 5) {
                     Potion haste = Potion.getPotionById(3);
                     if (haste == null) return;
@@ -261,7 +264,7 @@ public class EntityFaerie extends EntityFlying implements IEntityAdditionalSpawn
                     }
                 }
                 break;
-            case 2: // Mountainous
+            case "highland": // Mountainous
                 if (player.getEntityData().getInteger("genera.sacrifices_made") < 5) {
                     Potion jump_boost = Potion.getPotionById(8);
                     if (jump_boost == null) return;

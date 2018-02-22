@@ -1,4 +1,4 @@
-package net.bms.genera.rituals;
+package net.bms.genera.custom;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -16,19 +16,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class RitualRecipe extends IForgeRegistryEntry.Impl<RitualRecipe> {
+public class Ritual extends IForgeRegistryEntry.Impl<Ritual> {
     private JsonObject jsonObject;
 
-    public RitualRecipe(File file) throws IOException {
+    public Ritual(File file) throws IOException {
         FileReader reader = new FileReader(file);
         Gson jsonParser = new Gson();
         jsonObject = jsonParser.fromJson(reader, JsonObject.class);
     }
 
-    public ItemStack getResult(NonNullList<ItemStack> itemStacks, int faerieLevel, int faerieType) {
+    public ItemStack getResult(NonNullList<ItemStack> itemStacks, int faerieLevel, String faerieType) {
         ItemStack returnValue = ItemStack.EMPTY;
         if (getInt("experience_cost") > getInt("faerie_level")) return returnValue;
-        if (faerieLevel >= getInt("faerie_level") && faerieType >= getInt("faerie_type")) {
+        if (faerieLevel >= getInt("faerie_level") && faerieType.equals(getString("faerie_type"))) {
             JsonArray ingredientArray = jsonObject.getAsJsonArray("ingredients");
             if (ingredientArray == null) return returnValue;
             int ingredientsFound = 0;
@@ -60,7 +60,10 @@ public class RitualRecipe extends IForgeRegistryEntry.Impl<RitualRecipe> {
     }
 
     public int getInt(String elementName) {
-        JsonElement element = jsonObject.get(elementName);
-        return element.getAsInt();
+        return jsonObject.get(elementName).getAsInt();
+    }
+
+    public String getString(String elementName) {
+        return jsonObject.get(elementName).getAsString();
     }
 }
