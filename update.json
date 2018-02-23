@@ -7,10 +7,11 @@
     "1.0.3": "Fix some ItemStack handling, update version, rewrite JSON parsing to allow for multiple ingredients in one ritual.",
     "1.0.4": "Fix enclosure bug, flatten glass jar using vanilla bottle, add creative tab.",
     "1.0.5": "Fix altar bug, add Ring of Connla.",
-    "1.0.6": "Fixed Baubles dependency."
+    "1.0.6": "Fixed Baubles dependency.",
+    "1.0.7": "WILL BREAK OLD WORLDS. Custom faerie, similar to rituals. However, they cannot be spawned in game yet so this is preliminary."
   },
   "promos": {
-    "1.12.2-latest": "1.0.6",
-    "1.12.2-recommended": "1.0.6"
+    "1.12.2-latest": "1.0.7",
+    "1.12.2-recommended": "1.0.7"
   }
 }
