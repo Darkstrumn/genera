@@ -8,22 +8,28 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.30"
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'kotlin'
 
 minecraft {
     version = "1.12.2-14.23.2.2618"
     runDir = "run"
     mappings = "snapshot_20180216"
+
+    replace '@VERSION@', project.version
+    replace '@FINGERPRINT@', project.findProperty('signSHA1')
+    replaceIn "Genera.kt"
 }
 
-version = "${minecraft.version}-1.0.7"
+version = "${minecraft.version}-1.0.8"
 group = "net.bms.genera"
 archivesBaseName = "Genera"
 
 sourceCompatibility = targetCompatibility = "1.8"
-compileJava {
+compileKotlin {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 
@@ -32,11 +38,35 @@ repositories {
         name 'thiakil'
         url 'http://maven.thiakil.com'
     }
+    maven { // Forgelin
+        name 'shadowfacts'
+        url 'http://maven.shadowfacts.net/'
+    }
 }
 
 dependencies {
-    deobfCompile 'com.azanor.baubles:Baubles:1.12-1.5.2'
+    deobfCompile group: 'com.azanor.baubles', name: 'Baubles', version: '1.12-1.5.2'
+    compile group: "net.shadowfacts", name: "Forgelin", version: "1.6.0"
 }
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+}
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+    onlyIf {
+        project.hasProperty('keyStore')
+    }
+
+    keyStore = project.findProperty('keyStore')
+    alias = project.findProperty('keyStoreAlias')
+    storePass = project.findProperty('keyStorePass')
+    keyPass = project.findProperty('keyStoreKeyPass')
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+build.dependsOn signJar
 
 processResources {
     inputs.property "version", project.version
